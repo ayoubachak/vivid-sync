@@ -1,0 +1,16 @@
+{% load static %}
+
+<!-- base.html or another template -->
+<!DOCTYPE html>
+<html lang="en">
+  <title>Vivid Sync</title>
+<head>
+    <!-- Include your main CSS file -->
+    <link rel="stylesheet" href="{% static 'frontend/assets/index.css' %}"> 
+</head>
+<body>
+    <div id="root"></div>
+    <!-- Include your main JavaScript file -->
+    <script type="module" src="{% static 'frontend/assets/main.js' %}"></script> 
+</body>
+</html>
