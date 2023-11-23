@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'graphene_django',
     'vividql', # graphql app
+    'drf_yasg', # swagger api docs
+    # 'auth', # should handle the authentication
     'users',
     'content',
     'analytics',
@@ -134,9 +136,17 @@ AUTH_USER_MODEL = 'users.VividUser'
 
 AUTHENTICATION_BACKENDS = [
     # ... other authentication backends ...
-    'users.backends.JWTAuthenticationBackend',
+    'django.contrib.auth.backends.ModelBackend',  # Add this
+    'authentication.backends.JWTAuthenticationBackend',
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ],
+}
 
 
 # Graphql 

@@ -1,9 +1,10 @@
-from django.urls import path
-from . import views
-from .views import obtain_jwt_token, refresh_token
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import VividUserViewSet
 
+router = DefaultRouter()
+router.register(r'users', VividUserViewSet)
 
 urlpatterns = [
-    path('api/token/', obtain_jwt_token, name='token_obtain'),
-    path('api/token/refresh/', refresh_token, name='token_refresh'),
+    path('', include(router.urls)),
 ]
