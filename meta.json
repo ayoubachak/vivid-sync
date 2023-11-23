@@ -1,0 +1,16 @@
+{
+    "name": "Vivid Sync",
+    "version": "1.0.0",
+    "description": "Vivid Sync is a centered media platform where you can manage all your social media",
+    "author": "Your Name",
+    "email": "your.email@example.com",
+    "license": "MIT",
+    "dependencies": {
+        "django": "4.2.7"
+    },
+    "keywords": [
+        "django",
+        "web",
+        "application"
+    ]
+}

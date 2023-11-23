@@ -2,5 +2,9 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.index, name='index'),
+    # React Frontend
+    path('test', views.index, name='index'),
+
+    # Django templates
+    path('', views.landing_page, name='landing_page'),
 ]

@@ -20,6 +20,10 @@ from graphene_django.views import GraphQLView
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+from django.urls import path
+from django.views.static import serve
+from django.conf import settings
+
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -35,6 +39,7 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
+    path('meta.json', serve, {'document_root': settings.STATIC_ROOT, 'path': 'meta.json'}),
     path('admin/', admin.site.urls),
     # Auth
     path('api/auth/', include('authentication.urls')),

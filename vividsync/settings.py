@@ -160,3 +160,22 @@ REST_FRAMEWORK = {
 GRAPHENE = {
     'SCHEMA': 'vividql.schema.schema'  # Path to GraphQL schema
 }
+
+# Metadata
+META_DATA = {
+    "name": "Vivid Sync",
+    "version": "1.0.0",
+    "description": "Vivid Sync is a centered media platform where you can manage all your social media",
+    "author": "Your Name",
+    "email": "your.email@example.com",
+    "license": "MIT",
+    "dependencies": {
+        "django": "3.2.10",
+        "other_library": "1.2.3"
+    },
+    "keywords": [
+        "django",
+        "web",
+        "application"
+    ]
+}

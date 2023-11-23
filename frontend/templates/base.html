@@ -1,0 +1,51 @@
+<!-- templates/base.html -->
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Vivid Sync{% endblock title %}</title>
+    <link href="{% static 'frontend/assets/index.css' %}" rel="stylesheet">
+</head>
+<body class="font-sans bg-gray-100 text-gray-900">
+    <!-- Header / Nav -->
+    <nav class="bg-white shadow">
+        <div class="container mx-auto px-6 py-3">
+            <!-- Navigation Content -->
+            {% block navigation %}
+            <div class="flex justify-between items-center">
+                <div>
+                    <a class="text-gray-800 text-xl font-bold" href="#">Brand</a>
+                </div>
+                <div>
+                    <a class="text-gray-800 hover:text-gray-600" href="#">Home</a>
+                    <a class="text-gray-800 hover:text-gray-600 ml-4" href="#">Features</a>
+                    <a class="text-gray-800 hover:text-gray-600 ml-4" href="#">Pricing</a>
+                    <a class="text-gray-800 hover:text-gray-600 ml-4" href="#">Contact</a>
+                </div>
+            </div>
+            {% endblock navigation %}
+        </div>
+    </nav>
+    <div class="content flex-col">
+        <!-- Main Content -->
+        <main>
+            {% block content %}
+            {% endblock content %}
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white py-8">
+        <div class="container mx-auto text-center">
+            <p>&copy; {{ current_year }} Your Application. All rights reserved.</p>
+        </div>
+    </footer>
+
+    {% block extra_js %}
+    <!-- Additional JavaScript files can be included here -->
+    {% endblock extra_js %}
+</body>
+</html>
