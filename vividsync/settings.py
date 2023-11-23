@@ -37,10 +37,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'graphene_django',
+    'vividql', # graphql app
     'users',
     'content',
     'analytics',
     'social',
+    
 ]
 
 MIDDLEWARE = [
@@ -129,14 +132,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Authentication
 AUTH_USER_MODEL = 'users.VividUser'
 
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-    ),
-}
+AUTHENTICATION_BACKENDS = [
+    # ... other authentication backends ...
+    'users.backends.JWTAuthenticationBackend',
+]
 
-import datetime
-JWT_AUTH = {
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=2),
-    'JWT_AUTH_HEADER_PREFIX': 'Bearer',
+
+
+# Graphql 
+GRAPHENE = {
+    'SCHEMA': 'vividql.schema.schema'  # Path to GraphQL schema
 }
