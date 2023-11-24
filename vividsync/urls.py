@@ -57,6 +57,5 @@ urlpatterns = [
     path('api/', include('social.urls')),
     path('api/', include('users.urls')),
 
-
 ]
 

@@ -24,6 +24,9 @@
                     <a class="text-gray-800 hover:text-gray-600 ml-4" href="#">Features</a>
                     <a class="text-gray-800 hover:text-gray-600 ml-4" href="#">Pricing</a>
                     <a class="text-gray-800 hover:text-gray-600 ml-4" href="#">Contact</a>
+                    {% if user.is_authenticated %}
+                        <a class="text-gray-800 hover:text-gray-600 ml-4" href="{% url 'logout' %}">Logout</a>
+                    {% endif %}
                 </div>
             </div>
             {% endblock navigation %}

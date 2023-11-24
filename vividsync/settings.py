@@ -130,7 +130,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    BASE_DIR / 'frontend/static',  # Adjust if your static files are in a different location
+    BASE_DIR / 'frontend/static', 
+    BASE_DIR / 'frontend/res',  
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # Default primary key field type

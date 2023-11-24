@@ -3,9 +3,10 @@ from django.shortcuts import render
 # Create your views here.
 import jwt
 from django.conf import settings
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login
 from django.http import JsonResponse
 from datetime import datetime, timedelta
+from django.utils import timezone
 from users.models import VividUser
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
@@ -14,19 +15,21 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from .serializers import AuthTokenSerializer, VividUserSerializer
 
+
+
 def generate_access_token(user):
     access_token_payload = {
         'user_id': user.id,
-        'exp': datetime.utcnow() + timedelta(minutes=30),  # short-lived access token
-        'iat': datetime.utcnow(),
+        'exp': timezone.now() + timedelta(minutes=30),  # short-lived access token
+        'iat': timezone.now(),
     }
     return jwt.encode(access_token_payload, settings.SECRET_KEY, algorithm='HS256')
 
 def generate_refresh_token(user):
     refresh_token_payload = {
         'user_id': user.id,
-        'exp': datetime.utcnow() + timedelta(days=7),  # long-lived refresh token
-        'iat': datetime.utcnow(),
+        'exp': timezone.now() + timedelta(days=7),  # long-lived refresh token
+        'iat': timezone.now(),
     }
     return jwt.encode(refresh_token_payload, settings.SECRET_KEY, algorithm='HS256')
 
@@ -44,6 +47,10 @@ class ObtainJWTToken(APIView):
             if user:
                 access_token = generate_access_token(user)
                 refresh_token = generate_refresh_token(user)
+                
+                access_token_exp = timezone.now() + timedelta(days=7) # session will last as much as the refresh token 
+                request.session.set_expiry(access_token_exp)
+                login(request, user) # establish the session connection (This will handle the cookie session)
                 return Response({
                     'access_token': access_token,
                     'refresh_token': refresh_token

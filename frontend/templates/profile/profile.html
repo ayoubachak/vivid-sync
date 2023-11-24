@@ -1,0 +1,33 @@
+<!-- templates/profile.html -->
+{% extends 'base.html' %}
+
+{% block title %}User Profile - Vivid Sync{% endblock title %}
+
+{% block content %}
+<div class="container mx-auto px-6 py-6">
+    <h1 class="text-xl font-bold mb-4">User Profile</h1>
+    <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+        <div class="px-4 py-5 sm:px-6">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">Personal Information</h3>
+            <p class="mt-1 max-w-2xl text-sm text-gray-500">User details and contact information.</p>
+        </div>
+        <div class="border-t border-gray-200">
+            <dl>
+                <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500">Full name</dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{{ user.first_name }} {{ user.last_name }}</dd>
+                </div>
+                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500">Username</dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{{ user.username }}</dd>
+                </div>
+                <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500">Email address</dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{{ user.email }}</dd>
+                </div>
+                <!-- Add more user details here -->
+            </dl>
+        </div>
+    </div>
+</div>
+{% endblock content %}
