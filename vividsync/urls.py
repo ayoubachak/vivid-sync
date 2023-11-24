@@ -39,7 +39,7 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
-    path('meta.json', serve, {'document_root': settings.STATIC_ROOT, 'path': 'meta.json'}),
+    # path('meta.json', serve, {'document_root': settings.STATIC_ROOT, 'path': 'meta.json'}),
     path('admin/', admin.site.urls),
     # Auth
     path('api/auth/', include('authentication.urls')),

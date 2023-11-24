@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react-swc'
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
-  base: '/static/frontend/',
+  base: mode === 'production' ? '/static/frontend/' : '/',
   plugins: [react()],
   build:{
     outDir:'./static/frontend',
