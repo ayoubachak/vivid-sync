@@ -49,13 +49,13 @@ urlpatterns = [
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    # Apps 
+    path('api/analytics/', include('analytics.urls')),
+    path('api/content/', include('content.urls')),
+    path('api/social/', include('social.urls')),
+    path('api/users/', include('users.urls')),
     # Front End Application
     path('', include('frontend.urls')),
-    # Apps 
-    path('api/', include('analytics.urls')),
-    path('api/', include('content.urls')),
-    path('api/', include('social.urls')),
-    path('api/', include('users.urls')),
 
 ]
 

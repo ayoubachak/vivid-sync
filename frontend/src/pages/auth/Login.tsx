@@ -3,7 +3,12 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import axiosInstance from '../../middleware/axiosMiddleware';
-import { useNavigate } from 'react-router-dom';
+import Google from '../../assets/images/icons/google48.png';
+import Facebook from '../../assets/images/icons/facebook48.png';
+import { GoogleLogin } from 'react-google-login';
+import { useEffect } from 'react';
+import { gapi } from 'gapi-script';
+
 
 type LoginFormInputs = {
     username: string;
@@ -16,7 +21,6 @@ const loginSchema = yup.object({
 }).required();
 
 export default function Login() {
-    const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors } } = useForm<LoginFormInputs>({
         resolver: yupResolver(loginSchema)
     });
@@ -33,38 +37,116 @@ export default function Login() {
     
             // Redirect user or perform other actions upon successful login
             console.log('Login successful');
-            navigate('/me');
+            window.location.href = '/me/';
         } catch (error) {
             console.error('Login failed', error);
             // Handle login failure (e.g., show an error message)
         }
     };
+    
+    // other login options 
+    const google_login = async () =>{
+        console.log("Google Login")
+        window.location.href = "/api/auth/google-oauth2/login/redirect/"
 
-    return (
-        <div className="flex justify-center items-center h-screen bg-gray-100">
-            <div className="max-w-md w-full bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-                <h2 className="text-2xl font-bold mb-4 text-center">Welcome Back!</h2>
-                <p className="text-center mb-8">Sign in to continue.</p>
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                    <div>
-                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
-                            Username
-                        </label>
-                        <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" {...register("username")} />
-                        {errors.username && <span className="text-red-500 text-xs italic">{errors.username.message}</span>}
-                    </div>
-                    <div>
-                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
-                            Password
-                        </label>
-                        <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" {...register("password")} />
-                        {errors.password && <span className="text-red-500 text-xs italic">{errors.password.message}</span>}
-                    </div>
-                    <button className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
-                        Login
+    }
+    const facebook_login = async () =>{
+        console.log("Facebook Login")
+    }
+    const clientId="928817637583-1gdk8utdcnt8omd2i5bo97alj7lm4rkf.apps.googleusercontent.com"
+    useEffect(()=>{
+        function start(){
+            gapi.client.init({
+                clientId:clientId,
+                scope:""
+            })
+        }
+        gapi.load('client:auth2', start)
+    }, [])
+    
+    const googleSuccess = (response : any) => {
+        console.log('Google Success:', response);
+        // Send token to backend for verification
+    };
+    
+    const googleFailure = (error : any) => {
+        console.log('Google Login Failed:', error);
+    };
+
+    return (<>
+        <div className='light'>
+
+            <h1 className="text-6xl font-extrabold text-left mb-10">Log In</h1>
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                {/* Email Input */}
+                <div>
+                    <label className="block text-gray-700 text-lg font-bold mb-2 text-left" htmlFor="username">
+                        Email
+                    </label>
+                    <input className="h-[48px] bg-white rounded-[10px] border-2 border-slate-700 shadow appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="username" placeholder="Ex: example@example.com" {...register("username")} />
+                    {errors.username && <span className="text-red-500 text-xs italic">{errors.username.message}</span>}
+                </div>
+                {/* Password Input */}
+                <div>
+                    <label className="block text-gray-700 text-lg font-bold mb-2 text-left" htmlFor="username">
+                        Create Password
+                    </label>
+                    <input className="h-[48px] bg-white rounded-[10px] border-2 border-slate-700 shadow appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="Create your new password..." {...register("password")} />
+                    {errors.password && <span className="text-red-500 text-xs italic">{errors.password.message}</span>}
+                </div>
+                {/* Log In Button */}
+                <button className="dark w-64 rounded-[10px]  bg-dark hover:bg-black text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+                    Log In
+                </button>
+                {/* Forgot Password Link */}
+                <div className="text-center">
+                    <a href="#" className="font-bold" style={{ textDecoration: 'underline', color:"#E36B4B" }}>
+                        Forgot Password?
+                    </a>
+                </div>
+                {/* Divider */}
+                <div className="relative flex py-5 items-center">
+                    <div className="flex-grow" style={{ borderTop: '2px solid #E36B4B' }}></div>
+                    <span className="flex-shrink mx-4 text-gray-600 font-bold">Or</span>
+                    <div className="flex-grow" style={{ borderTop: '2px solid #E36B4B' }}></div>
+                </div>
+
+                {/* Google and Facebook Login Options */}
+                <div className="flex flex-col space-y-4">
+                    {/* Google Login Button */}
+                    <button 
+                        onClick={google_login}
+                        type='button' 
+                        className="font-bold h-[48px] bg-white rounded-[10px] border-2 border-slate-700 shadow appearance-none w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline flex items-center justify-center">
+                        <img src={Google} width={33} height={33} alt="Google" className="mr-2" /> Continue with Google
                     </button>
-                </form>
-            </div>
+
+                    {/* Facebook Login Button */}
+                    <button 
+                        onClick={facebook_login}
+                        type='button' 
+                        className="font-bold h-[48px] bg-white rounded-[10px] border-2 border-slate-700 shadow appearance-none w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline flex items-center justify-center">
+                        <img src={Facebook} width={33} height={33} alt="Facebook" className="mr-2" /> Continue with Facebook
+                    </button>
+                    <GoogleLogin
+                        clientId={clientId}
+                        buttonText="Continue with Google"
+                        onSuccess={googleSuccess}
+                        onFailure={googleFailure}
+                        cookiePolicy={'single_host_origin'}
+                    />
+                </div>
+                {/* Bottom Splitter */}
+                <div className="flex-grow" style={{ borderTop: '2px solid #E36B4B' }}></div>
+                {/* Sign Up Suggestion */}
+                <div className="text-center font-bold">
+                    <span className="text-gray-700">Don't have an Account?</span>{' '}
+                    <a href="/signup/" style={{ textDecoration: 'underline', color:"#E36B4B"}}>
+                        Sign Up here
+                    </a>
+                </div>
+            </form>
         </div>
+    </>
     );
 }

@@ -43,5 +43,11 @@ def custom_logout(request):
 from datetime import datetime
 
 def landing_page(request):
-    return render(request, 'landing_page.html', {'current_year': datetime.now().year})
+    return render(request, 'pages/landing_page.html', {'current_year': datetime.now().year})
+def about_page(request):
+    return render(request, 'pages/about_page.html', {'current_year': datetime.now().year})
+def pricing_page(request):
+    return render(request, 'pages/pricing_page.html', {'current_year': datetime.now().year})
+def tools_page(request):
+    return render(request, 'pages/tools_page.html', {'current_year': datetime.now().year})
 

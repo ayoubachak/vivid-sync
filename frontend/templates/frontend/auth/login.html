@@ -17,15 +17,27 @@
 
     <title>Login</title>
     <link rel="stylesheet" href="{% static 'frontend/assets/index.css' %}">
-</head>
-    <link rel="stylesheet" href="{% static 'frontend/assets/index.css' %}"> 
+
 </head>
 <body>
-    <h1>
-        This is the Login Form
-    </h1>
-    <!-- This is the react Login form  -->
-    <div id="root"></div>
+    <header class="border-b border-gray-200 light">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <!-- Logo -->
+            <a href="/" class="pl-35px">
+                <img class="w-[64px] h-[64px]" src="{% static 'frontend/logo.png' %}" alt="Project Logo">
+            </a>
+        </nav>
+    </header>
+    <div class="flex w-full">
+        <!-- Left side with dark theme and logo -->
+        <div class="hidden md:flex md:w-1/2 dark items-center justify-center">
+            <img src="{% static 'frontend/images/logos/vivid-sync-high-resolution-logo-white-transparent.png' %}" alt="Vivid Sync Logo" class="w-1/2">
+        </div>
+        
+        <!-- Right side for React app's form -->
+        <div id="root" class="w-full md:w-1/2 light"></div>
+    </div>
+
     <script type="module" src="{% static 'frontend/assets/main.js' %}"></script> 
 </body>
 </html>

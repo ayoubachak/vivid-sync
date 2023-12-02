@@ -14,4 +14,7 @@ urlpatterns = [
 
     # Django templates
     path('', views.landing_page, name='landing_page'),
+    path('tools/', views.tools_page, name='tools_page'),
+    path('pricing/', views.pricing_page, name='pricing_page'),
+    path('about/', views.about_page, name='about_page'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) # to handle the media

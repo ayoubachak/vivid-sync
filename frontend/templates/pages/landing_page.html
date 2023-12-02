@@ -1,0 +1,22 @@
+{% extends "../base.html" %}
+{% load static %}
+
+{% block title %}Welcome to Our App{% endblock title %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8 flex flex-wrap justify-between items-center ">
+    <!-- Left Side: App Name, Slogan, and Button -->
+    <div class="w-full lg:w-1/2">
+        <h1 class="text-5xl font-bold underline mb-4 "style="text-decoration: underline; text-decoration-color: #E36B4B;">Vivid Sync</h1>
+        <p class="text-xl mb-8">Manage and Analyze your social growth all in one Place</p>
+        <a href="{% url 'signup' %}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded dark">
+            Start Now
+        </a>
+    </div>
+
+    <!-- Right Side: Image Illustrating App Functionality -->
+    <div class="w-full lg:w-1/2 flex justify-center">
+        <img src="{% static 'frontend/images/pages/landing/front-image.png' %}" alt="App Functionality" class="max-w-md">
+    </div>
+</div>
+{% endblock content %}

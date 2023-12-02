@@ -4,11 +4,11 @@ from .views import (SocialMediaPlatformViewSet, SocialMediaProfileViewSet,
                     PostViewSet, CommentViewSet, ReplyViewSet)
 
 router = DefaultRouter()
-router.register(r'social/platforms', SocialMediaPlatformViewSet)
-router.register(r'social/profiles', SocialMediaProfileViewSet)
-router.register(r'social/post', PostViewSet)
-router.register(r'social/comment', CommentViewSet)
-router.register(r'social/reply', ReplyViewSet)
+router.register(r'platforms', SocialMediaPlatformViewSet)
+router.register(r'profiles', SocialMediaProfileViewSet)
+router.register(r'post', PostViewSet)
+router.register(r'comment', CommentViewSet)
+router.register(r'reply', ReplyViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
