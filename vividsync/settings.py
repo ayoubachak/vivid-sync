@@ -25,6 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-uja+63^-hp8lslb1fn5h!o#jvz81_1wmbdt6d+j!0zo80d=x3r'
+SITE_ID = 1
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -41,11 +42,23 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'django_extensions', # for ssl testing
     'graphene_django',
     'vividql', # graphql app
     'drf_yasg', # swagger api docs
     'frontend', # frontend of the application
     # 'auth', # should handle the authentication
+    # social media authentication
+    'allauth', 
+    'allauth.account', 
+    'allauth.socialaccount', 
+    'allauth.socialaccount.providers.google', 
+    'allauth.socialaccount.providers.facebook', 
+    'allauth.socialaccount.providers.twitter', 
+    'allauth.socialaccount.providers.github', 
+    
+    # apps
     'users',
     'content',
     'analytics',
@@ -61,6 +74,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # needed by allauth
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 ROOT_URLCONF = 'vividsync.urls'
@@ -77,6 +92,8 @@ TEMPLATES = [
                 'django.template.context_processors.static',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # Needed by allauth
+                'django.template.context_processors.request',
             ],
         },
     },
@@ -146,8 +163,10 @@ AUTH_USER_MODEL = 'users.VividUser'
 
 AUTHENTICATION_BACKENDS = [
     # ... other authentication backends ...
-    'django.contrib.auth.backends.ModelBackend',  # Add this
-    'authentication.backends.JWTAuthenticationBackend',
+    'django.contrib.auth.backends.ModelBackend',  # session based authentication backend
+    'authentication.backends.JWTAuthenticationBackend', # for jwtauthentication backend
+    # needed by allauth
+    'allauth.account.auth_backends.AuthenticationBackend', # social medial authentication
 ]
 
 REST_FRAMEWORK = {
@@ -166,6 +185,34 @@ GOOGLE_OAUTH2_CLIENT_ID = os.getenv('GOOGLE_OAUTH2_CLIENT_ID')
 GOOGLE_OAUTH2_CLIENT_SECRET = os.getenv('GOOGLE_OAUTH2_CLIENT_SECRET')
 GOOGLE_OAUTH2_PROJECT_ID = os.getenv('GOOGLE_OAUTH2_PROJECT_ID')
 BASE_BACKEND_URL = os.getenv('BASE_BACKEND_URL', 'http://127.0.0.1:8000/')
+# Github Auth
+GITHUB_OAUTH2_CLIENT_ID = os.getenv('GITHUB_OAUTH2_CLIENT_ID')
+GITHUB_OAUTH2_CLIENT_SECRET = os.getenv('GITHUB_OAUTH2_CLIENT_SECRET')
+# Facebook Auth
+FACEBOOK_OAUTH2_APP_ID = os.getenv('FACEBOOK_OAUTH2_APP_ID')
+FACEBOOK_OAUTH2_APP_SECRET = os.getenv('FACEBOOK_OAUTH2_APP_SECRET')
+
+
+
+# needed by allauth
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        # For each OAuth based provider, either add a ``SocialApp``
+        # (``socialaccount`` app) containing the required client
+        # credentials, or list them here:
+        'APP': {
+            'client_id': GOOGLE_OAUTH2_CLIENT_ID,
+            'secret': GOOGLE_OAUTH2_CLIENT_SECRET,
+        }
+    },
+    'github': {
+        'APP': {
+            'client_id': GITHUB_OAUTH2_CLIENT_ID,
+            'secret': GITHUB_OAUTH2_CLIENT_SECRET,
+        }
+    },
+
+}
 
 
 # Graphql 
