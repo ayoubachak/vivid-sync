@@ -52,26 +52,11 @@ export default function Login() {
     }
     const facebook_login = async () =>{
         console.log("Facebook Login")
+        window.location.href = "/accounts/login/google-oauth2/login/redirect/"
     }
-    const clientId="928817637583-1gdk8utdcnt8omd2i5bo97alj7lm4rkf.apps.googleusercontent.com"
-    useEffect(()=>{
-        function start(){
-            gapi.client.init({
-                clientId:clientId,
-                scope:""
-            })
-        }
-        gapi.load('client:auth2', start)
-    }, [])
     
-    const googleSuccess = (response : any) => {
-        console.log('Google Success:', response);
-        // Send token to backend for verification
-    };
     
-    const googleFailure = (error : any) => {
-        console.log('Google Login Failed:', error);
-    };
+
 
     return (<>
         <div className='light'>
@@ -128,13 +113,6 @@ export default function Login() {
                         className="font-bold h-[48px] bg-white rounded-[10px] border-2 border-slate-700 shadow appearance-none w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline flex items-center justify-center">
                         <img src={Facebook} width={33} height={33} alt="Facebook" className="mr-2" /> Continue with Facebook
                     </button>
-                    <GoogleLogin
-                        clientId={clientId}
-                        buttonText="Continue with Google"
-                        onSuccess={googleSuccess}
-                        onFailure={googleFailure}
-                        cookiePolicy={'single_host_origin'}
-                    />
                 </div>
                 {/* Bottom Splitter */}
                 <div className="flex-grow" style={{ borderTop: '2px solid #E36B4B' }}></div>
