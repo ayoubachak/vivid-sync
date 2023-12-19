@@ -3,12 +3,8 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import axiosInstance from '../../middleware/axiosMiddleware';
-import Google from '../../assets/images/icons/google48.png';
-import Facebook from '../../assets/images/icons/facebook48.png';
-import { GoogleLogin } from 'react-google-login';
-import { useEffect } from 'react';
-import { gapi } from 'gapi-script';
-
+import {facebook_login,google_login, Facebook, Google } from '../../utils';
+import { useState } from 'react';
 
 type LoginFormInputs = {
     username: string;
@@ -21,6 +17,7 @@ const loginSchema = yup.object({
 }).required();
 
 export default function Login() {
+    const [passwordShown, setPasswordShown] = useState(false);
     const { register, handleSubmit, formState: { errors } } = useForm<LoginFormInputs>({
         resolver: yupResolver(loginSchema)
     });
@@ -43,19 +40,11 @@ export default function Login() {
             // Handle login failure (e.g., show an error message)
         }
     };
+ 
     
-    // other login options 
-    const google_login = async () =>{
-        console.log("Google Login")
-        window.location.href = "/api/auth/google-oauth2/login/redirect/"
-
-    }
-    const facebook_login = async () =>{
-        console.log("Facebook Login")
-        window.location.href = "/accounts/login/google-oauth2/login/redirect/"
-    }
-    
-    
+    const togglePasswordVisibility = () => {
+        setPasswordShown(!passwordShown);
+    };
 
 
     return (<>
@@ -76,7 +65,18 @@ export default function Login() {
                     <label className="block text-gray-700 text-lg font-bold mb-2 text-left" htmlFor="username">
                         Create Password
                     </label>
-                    <input className="h-[48px] bg-white rounded-[10px] border-2 border-slate-700 shadow appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="Create your new password..." {...register("password")} />
+                    <div className='flex'>
+                        <input
+                            className="h-[48px] bg-white rounded-[10px] border-2 border-slate-700 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                            id="password"
+                            type={passwordShown ? "text" : "password"}
+                            placeholder="Create your new password..."
+                            {...register("password")}
+                        />
+                        <button onClick={togglePasswordVisibility} type="button" className=' ml-5'>
+                            {passwordShown ? "Hide" : "Show"}
+                        </button>
+                    </div>
                     {errors.password && <span className="text-red-500 text-xs italic">{errors.password.message}</span>}
                 </div>
                 {/* Log In Button */}
@@ -85,7 +85,7 @@ export default function Login() {
                 </button>
                 {/* Forgot Password Link */}
                 <div className="text-center">
-                    <a href="#" className="font-bold" style={{ textDecoration: 'underline', color:"#E36B4B" }}>
+                    <a href="/forgot-password/" className="font-bold" style={{ textDecoration: 'underline', color:"#E36B4B" }}>
                         Forgot Password?
                     </a>
                 </div>
@@ -103,7 +103,7 @@ export default function Login() {
                         onClick={google_login}
                         type='button' 
                         className="font-bold h-[48px] bg-white rounded-[10px] border-2 border-slate-700 shadow appearance-none w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline flex items-center justify-center">
-                        <img src={Google} width={33} height={33} alt="Google" className="mr-2" /> Continue with Google
+                        <img src={Google} width={33} height={33} alt="Google" className="mr-2" /> Login with Google
                     </button>
 
                     {/* Facebook Login Button */}
@@ -111,7 +111,7 @@ export default function Login() {
                         onClick={facebook_login}
                         type='button' 
                         className="font-bold h-[48px] bg-white rounded-[10px] border-2 border-slate-700 shadow appearance-none w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline flex items-center justify-center">
-                        <img src={Facebook} width={33} height={33} alt="Facebook" className="mr-2" /> Continue with Facebook
+                        <img src={Facebook} width={33} height={33} alt="Facebook" className="mr-2" /> Login with Facebook
                     </button>
                 </div>
                 {/* Bottom Splitter */}

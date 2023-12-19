@@ -44,6 +44,7 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     # Auth
     path('api/auth/', include('authentication.urls')),
+    path('api/registration/', include('registration.urls')),
     # GraqphQL
     path('graphql/', GraphQLView.as_view(graphiql=True)),
     # Swagger

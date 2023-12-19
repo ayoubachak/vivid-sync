@@ -6,5 +6,6 @@ urlpatterns = [
     path('token/refresh/', RefreshToken.as_view(), name='token_refresh'),
     path('me/', UserMeView.as_view(), name='user-me'),
     path('google-oauth2/login/', include('authentication.googleauth.urls'))
+
 ]
 

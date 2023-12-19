@@ -2,27 +2,44 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Signup to Vivid Sync - Signup to your account now">
-    <meta name="keywords" content="login, authentication, user login, account">
-    <meta name="author" content="Ayoub Achak">
-
-    <!-- Add Open Graph meta tags for better sharing on social media -->
-    <meta property="og:title" content="Signup - Vivid Sync">
-    <meta property="og:description" content="Signup or Signup to Vivid Sync today">
-    <!-- <meta property="og:image" content="{% static 'path/to/your/image.jpg' %}"> -->
-    <!-- <meta property="og:url" content="https://www.yourwebsite.com/login"> -->
-
-    <title>Signup</title>
-    <link rel="stylesheet" href="{% static 'frontend/assets/index.css' %}">
-</head>
-    <link rel="stylesheet" href="{% static 'frontend/assets/index.css' %}"> 
-</head>
-<body>
-    <!-- This is the react Signup form  -->
-    <div id="root"></div>
-    <script type="module" src="{% static 'frontend/assets/main.js' %}"></script> 
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Sign up for Vivid Sync - Create your account">
+        <meta name="keywords" content="signup, registration, user registration, create account">
+        <meta name="author" content="Ayoub Achak">
+    
+        <!-- Add Open Graph meta tags for better sharing on social media -->
+        <meta property="og:title" content="Signup - Vivid Sync">
+        <meta property="og:description" content="Join Vivid Sync today">
+        <!-- <meta property="og:image" content="{% static 'path/to/your/image.jpg' %}"> -->
+        <!-- <meta property="og:url" content="https://www.yourwebsite.com/signup"> -->
+    
+        <title>Signup</title>
+        <link rel="stylesheet" href="{% static 'frontend/assets/index.css' %}">
+    
+    </head>
+    <body>
+        <header class="border-b border-gray-200 light">
+            <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+                <!-- Logo -->
+                <a href="/" class="pl-35px">
+                    <img class="w-[64px] h-[64px]" src="{% static 'frontend/logo.png' %}" alt="Project Logo">
+                </a>
+            </nav>
+        </header>
+        <div class="flex w-full">
+            <!-- Left side with dark theme and logo -->
+            <div class="hidden md:flex md:w-1/2 dark items-center justify-center">
+                <img src="{% static 'frontend/images/logos/vivid-sync-high-resolution-logo-white-transparent.png' %}" alt="Vivid Sync Logo" class="w-1/2">
+            </div>
+            
+            <!-- Right side for React app's form -->
+            <div id="root" class="w-full md:w-1/2 light">
+                <!-- Here will be mounted the SignUp React component -->
+            </div>
+        </div>
+    
+        <script type="module" src="{% static 'frontend/assets/main.js' %}"></script>
+    </body>
 </html>

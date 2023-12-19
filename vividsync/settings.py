@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     'content',
     'analytics',
     'social',
+    'registration',
     
 ]
 
@@ -191,7 +192,7 @@ GITHUB_OAUTH2_CLIENT_SECRET = os.getenv('GITHUB_OAUTH2_CLIENT_SECRET')
 # Facebook Auth
 FACEBOOK_OAUTH2_APP_ID = os.getenv('FACEBOOK_OAUTH2_APP_ID')
 FACEBOOK_OAUTH2_APP_SECRET = os.getenv('FACEBOOK_OAUTH2_APP_SECRET')
-
+LOGIN_REDIRECT_URL="/me/"
 
 
 # needed by allauth
