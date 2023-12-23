@@ -1,0 +1,45 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en" style="height: 100%;">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Verify Email Vivid Sync - Verify your account">
+        <meta name="keywords" content="email, Verify, verify email">
+        <meta name="author" content="Ayoub Achak">
+    
+        <!-- Add Open Graph meta tags for better sharing on social media -->
+        <meta property="og:title" content="Verify Email - Vivid Sync">
+        <meta property="og:description" content="Verify Vivid Sync Email">
+        <!-- <meta property="og:image" content="{% static 'path/to/your/image.jpg' %}"> -->
+        <!-- <meta property="og:url" content="https://www.yourwebsite.com/signup"> -->
+    
+        <title>VividSync : Email Verification</title>
+        <link rel="stylesheet" href="{% static 'frontend/assets/index.css' %}">
+    
+    </head>
+    <body style="height: 100%;">
+        <header class="border-b border-gray-200 light">
+            <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+                <!-- Logo -->
+                <a href="/" class="pl-35px">
+                    <img class="w-[64px] h-[64px]" src="{% static 'frontend/logo.png' %}" alt="Project Logo">
+                </a>
+            </nav>
+        </header>
+        <div class="flex w-full ">
+            <!-- Left side with light theme and logo -->
+            <div class="hidden md:flex md:w-1/2 light items-center justify-center">
+                <img src="{% static 'frontend/images/logos/vivid-sync-high-resolution-logo-transparent-350x300.png' %}" alt="Vivid Sync Logo" class="w-1/2">
+            </div>
+            
+            <!-- Right side for React app's form -->
+            <div id="root" class="w-full md:w-1/2 light">
+                <!-- Here will be mounted the SignUp React component -->
+            </div>
+        </div>
+    
+        <script type="module" src="{% static 'frontend/assets/main.js' %}"></script>
+    </body>
+</html>

@@ -1,0 +1,15 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Verify Your Email</title>
+</head>
+<body>
+    <p>Hi {{ user.get_full_name|default:"there" }},</p>
+    <p>Thank you for registering. Please verify your email address by clicking on the button below or using the code provided:</p>
+    <p>Your verification code: <strong>{{ verification_code }}</strong></p>
+    <a href="{{ verification_link }}" style="background-color: #0066cc; color: white; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block;">Verify Email</a>
+    <p>If the button above does not work, paste the following link into your browser:</p>
+    <p><a href="{{ verification_link }}">{{ verification_link }}</a></p>
+</body>
+</html>

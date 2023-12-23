@@ -29,10 +29,18 @@ SITE_ID = 1
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+APPEND_SLASH = True
 
 ALLOWED_HOSTS = []
 
 
+# SMTP Setup
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.getenv('SMTP_EMAIL') # Your Gmail address
+EMAIL_HOST_PASSWORD = os.getenv('SMTP_PASSWORD')    # Your Gmail password
 # Application definition
 
 INSTALLED_APPS = [
