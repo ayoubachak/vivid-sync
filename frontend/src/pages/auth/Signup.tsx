@@ -4,31 +4,68 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import {facebook_login,google_login, Facebook, Google } from '../../utils';
 import { useState } from 'react';
+import axiosInstance from '../../middleware/axiosMiddleware';
 
 type SignupFormInputs = {
-    firstName: string;
-    lastName: string;
+    first_name: string;
+    last_name: string;
     email: string;
     password: string;
 };
 
 const signupSchema = yup.object({
-    firstName: yup.string().required('First Name is required'),
-    lastName: yup.string().required('Last Name is required'),
+    first_name: yup.string().required('First Name is required'),
+    last_name: yup.string().required('Last Name is required'),
     email: yup.string().email('Email is invalid').required('Email is required'),
     password: yup.string().min(4).required('Password is required'),
 }).required();
 
+function isValidFieldName(key: string): key is keyof SignupFormInputs {
+    return ["first_name", "last_name", "email", "password"].includes(key);
+}
+
 export default function Signup() {
     const [passwordShown, setPasswordShown] = useState(false);
-    const { register, handleSubmit, formState: { errors } } = useForm<SignupFormInputs>({
+    const { register, handleSubmit, formState: { errors }, setError, clearErrors  } = useForm<SignupFormInputs>({
         resolver: yupResolver(signupSchema)
-    });
+    }); 
+    const [generalError, setGeneralError] = useState("");
 
-    const onSubmit: SubmitHandler<SignupFormInputs> = data => {
+    const onSubmit: SubmitHandler<SignupFormInputs> = async (data) => {
         console.log(data);
-        console.log("submitting signup form..")
-        // Call API to perform signup
+        console.log("submitting signup form..") 
+        clearErrors(); // Clear previous form errors
+        try {
+            console.log("submitting signup form..");
+            const response = await axiosInstance.post('/api/registration/sign-up/', data); // Update this with your actual signup endpoint
+            const { access_token, refresh_token } = response.data;
+            
+            // Store the tokens in localStorage (consider a more secure storage for production)
+            localStorage.setItem('accessToken', access_token);
+            localStorage.setItem('refreshToken', refresh_token);
+            
+            console.log('Signup successful');
+            // Redirect user or perform other actions upon successful signup
+            window.location.href = '/me/'; // Update the redirect URL as needed
+        } catch (error: any) {
+            if (error.response && error.response.data) {
+                if ('error' in error.response.data) {
+                    // Handle non-field error
+                    setGeneralError(error.response.data.error);
+                } else {
+                    // Handle API response errors
+                    Object.keys(error.response.data).forEach((key) => {
+                        if (isValidFieldName(key)) {
+                            setError(key, {
+                                type: "server",
+                                message: error.response.data[key].join(" "), // Assuming each key's error is an array of messages
+                            });
+                        }
+                    });
+                }
+            }
+        }
+        
     };
     const togglePasswordVisibility = () => {
         setPasswordShown(!passwordShown);
@@ -38,23 +75,24 @@ export default function Signup() {
         <div className="light">
             <h1 className="text-6xl font-extrabold text-left mb-10">Sign Up</h1>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                {generalError && <div className="text-red-500">{generalError}</div>}
                 {/* Flex container for first name and last name */}
                 <div className="flex flex-wrap -mx-3 mb-6">
                     {/* First Name */}
                     <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                        <label className="block text-gray-700 text-lg font-bold mb-2 text-left" htmlFor="firstName">
+                        <label className="block text-gray-700 text-lg font-bold mb-2 text-left" htmlFor="first_name">
                             First Name
                         </label>
-                        <input className="h-[48px] bg-white rounded-[10px] border-2 border-slate-700 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="firstName" type="text" placeholder="Ex: John" {...register("firstName")} />
-                        {errors.firstName && <span className="text-red-500 text-xs italic">{errors.firstName.message}</span>}
+                        <input className="h-[48px] bg-white rounded-[10px] border-2 border-slate-700 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="first_name" type="text" placeholder="Ex: John" {...register("first_name")} />
+                        {errors.first_name && <span className="text-red-500 text-xs italic">{errors.first_name.message}</span>}
                     </div>
                     {/* Last Name */}
                     <div className="w-full md:w-1/2 px-3">
-                        <label className="block text-gray-700 text-lg font-bold mb-2 text-left" htmlFor="lastName">
+                        <label className="block text-gray-700 text-lg font-bold mb-2 text-left" htmlFor="last_name">
                             Last Name
                         </label>
-                        <input className="h-[48px] bg-white rounded-[10px] border-2 border-slate-700 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="lastName" type="text" placeholder="Ex: Doe" {...register("lastName")} />
-                        {errors.lastName && <span className="text-red-500 text-xs italic">{errors.lastName.message}</span>}
+                        <input className="h-[48px] bg-white rounded-[10px] border-2 border-slate-700 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="last_name" type="text" placeholder="Ex: Doe" {...register("last_name")} />
+                        {errors.last_name && <span className="text-red-500 text-xs italic">{errors.last_name.message}</span>}
                     </div>
                 </div>
                 {/* Email */}

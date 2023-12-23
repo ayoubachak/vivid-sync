@@ -50,7 +50,9 @@ class ObtainJWTToken(APIView):
                 
                 access_token_exp = timezone.now() + timedelta(days=7) # session will last as much as the refresh token 
                 request.session.set_expiry(access_token_exp)
-                login(request, user) # establish the session connection (This will handle the cookie session)
+                login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+                login(request, user, backend='authentication.backends.JWTAuthenticationBackend')
+
                 return Response({
                     'access_token': access_token,
                     'refresh_token': refresh_token
