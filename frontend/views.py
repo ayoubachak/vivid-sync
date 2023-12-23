@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 
 from registration.utils import send_verification_email
-# Create your views here.
+from rest_framework.response import Response
 
 
 def index(request):
@@ -59,8 +59,21 @@ def me(request):
     # check if the user agreed to the terms, if not redirect him to the terms of service page
     if not user.agreed_to_terms:
         return redirect('/terms-of-service/')
+    # check if user completed profile
+    if not user.profile_completed:
+        return redirect('/complete-profile/')
+
     return render(request, 'profile/profile.html', context=context)
 
+from rest_framework import status
+
+@login_required(login_url='/login/')
+def complete_profile(request):
+    user = request.user
+    if user.account_type is None:
+        return render(request, 'frontend/profile/setup_account_type.html')
+    # Redirect to some other view if the account type is set
+    return redirect('/me/')
 
 def custom_logout(request):
     # Delete the token here if stored in server or invalidate it

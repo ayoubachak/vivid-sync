@@ -14,7 +14,7 @@ const TermsOfService: React.FC = () => {
     
         if (response.status === 200) {
         console.log('Terms accepted successfully.');
-        window.location.href = '/me/';
+        window.location.href = '/complete-profile/';
         } else {
         console.log('Failed to accept terms.');
         }

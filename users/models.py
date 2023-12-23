@@ -5,6 +5,11 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.utils.crypto import get_random_string
 
+class AccountType(models.TextChoices):
+    INFLUENCER = 'Influencer', _('Influencer')
+    CONTENT_CREATOR = 'Content Creator', _('Content Creator')
+    ORGANIZATION = 'Organization', _('Organization')
+
 
 class VividUser(AbstractUser):
     profile_picture = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
@@ -13,8 +18,16 @@ class VividUser(AbstractUser):
     verification_code = models.CharField(max_length=6, blank=True)
     verification_token = models.CharField(max_length=100, blank=True)
     agreed_to_terms = models.BooleanField(default=False)
-    
-    # create a function info to display the user info (the email, the first name, the last name, the username, the profile picture, the bio) in the form of a dict
+    account_type = models.CharField(
+        max_length=50,
+        choices=AccountType.choices,
+        default=None,
+        null=True,
+        blank=True
+    )
+    profile_completed = models.BooleanField(default=False)
+
+
     def info(self):
         return {
             "email": self.email,
