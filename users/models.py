@@ -4,20 +4,34 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.utils.crypto import get_random_string
+from django.apps import apps
+
 
 class AccountType(models.TextChoices):
     INFLUENCER = 'Influencer', _('Influencer')
     CONTENT_CREATOR = 'Content Creator', _('Content Creator')
     ORGANIZATION = 'Organization', _('Organization')
 
+class GenderChoices(models.TextChoices):
+    MALE = 'M', _('Male')
+    FEMALE = 'F', _('Female')
 
-class VividUser(AbstractUser):
-    profile_picture = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
+class VividUser(AbstractUser):        
+
+
+    profile_picture = models.ImageField(upload_to='media/images/profile_pics/', blank=True, null=True)
     email_verified = models.BooleanField(default=False)
     bio = models.TextField(blank=True, null=True)
     verification_code = models.CharField(max_length=6, blank=True)
     verification_token = models.CharField(max_length=100, blank=True)
     agreed_to_terms = models.BooleanField(default=False)
+    gender = models.CharField(
+        max_length=2,
+        choices=GenderChoices.choices,
+        default=None,  
+        null=True,  # Allows the field to be null
+        blank=True,  # Allows the form to be saved without a value
+    )
     account_type = models.CharField(
         max_length=50,
         choices=AccountType.choices,
@@ -26,7 +40,7 @@ class VividUser(AbstractUser):
         blank=True
     )
     profile_completed = models.BooleanField(default=False)
-
+    hashtags = models.ManyToManyField('social.Hashtag', related_name='users')
 
     def info(self):
         return {

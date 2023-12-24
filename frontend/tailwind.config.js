@@ -10,6 +10,11 @@ module.exports = {
     extend: {
       colors: {
         'text-color': '#32456F',
+        'light-orange': '#FFF2EF',
+        'intense-orange': '#E36B4B',
+        'color-primary': '#32456F', // this is dark blue
+        'color-secondary': '#E36B4B', // this is dark orange
+        'color-tertiary': '#FFF2EF', // this is light orange
       },
     },
   },

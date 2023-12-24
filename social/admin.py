@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import SocialMediaPlatform
+from .models import  SocialMediaPlatform
 
 
 # Register your models here.
@@ -51,5 +51,8 @@ class ReplyAdmin(admin.ModelAdmin):
     list_filter = ('comment', 'created_at')
     search_fields = ('comment__content', 'external_user__username')
 
-
+from .models import Hashtag
+@admin.register(Hashtag)
+class HashtagAdmin(admin.ModelAdmin):
+    list_display = ('name',)
 

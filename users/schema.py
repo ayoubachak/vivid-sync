@@ -2,9 +2,10 @@
 
 import graphene
 from graphene_django import DjangoObjectType
-from .models import VividUser
+from .models import AccountType, VividUser
 from graphene import relay
 from django.db.models import Q
+from graphql_jwt.decorators import login_required
 
 class VividUserType(DjangoObjectType):
     class Meta:
@@ -25,6 +26,30 @@ class CreateUser(graphene.Mutation):
         user.set_password(kwargs.get('password'))
         user.save()
         return CreateUser(user=user)
+
+class ChangeAccountType(graphene.Mutation):
+    class Arguments:
+        account_type = graphene.String(required=True)
+
+    user = graphene.Field(VividUserType)
+    success = graphene.Boolean()
+    message = graphene.String()
+
+    @classmethod
+    @login_required
+    def mutate(cls, root, info, account_type):
+        # Get the current user from the context
+        user = info.context.user
+        if not user.is_authenticated:
+            return cls(success=False, message="You must be logged in to change your account type.")
+        # Check if the account type is valid
+        if account_type not in AccountType.values:
+            return cls(success=False, message="Invalid account type.")
+        # Set the new account type
+        user.account_type = account_type
+        user.save()
+        return cls(user=user, success=True, message="Account type changed successfully.")
+
 
 class DeleteUserByEmail(graphene.Mutation):
     class Arguments:
@@ -59,3 +84,4 @@ class Query(graphene.ObjectType):
 class Mutation(graphene.ObjectType):
     create_user = CreateUser.Field()
     delete_user_by_email = DeleteUserByEmail.Field()
+    change_account_type = ChangeAccountType.Field()

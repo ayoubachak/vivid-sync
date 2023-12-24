@@ -60,8 +60,11 @@ def me(request):
     if not user.agreed_to_terms:
         return redirect('/terms-of-service/')
     # check if user completed profile
-    if not user.profile_completed:
+    print(f"{user.account_type=}")
+    if not user.account_type :
         return redirect('/complete-profile/')
+    # if not user.profile_completed:
+    #     return redirect('/complete-profile/')
 
     return render(request, 'profile/profile.html', context=context)
 
@@ -70,7 +73,7 @@ from rest_framework import status
 @login_required(login_url='/login/')
 def complete_profile(request):
     user = request.user
-    if user.account_type is None:
+    if not user.account_type :
         return render(request, 'frontend/profile/setup_account_type.html')
     # Redirect to some other view if the account type is set
     return redirect('/me/')

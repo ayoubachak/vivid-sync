@@ -16,49 +16,20 @@
     <title>Choose Account Type - Vivid Sync</title>
     <link rel="stylesheet" href="{% static 'frontend/assets/index.css' %}">
 </head>
-<body class="bg-gray-100">
+<body class="light">
 
     <header class="border-b border-gray-200 light">
         <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
             <!-- Logo -->
             <a href="/" class="pl-35px">
-                <img class="w-[64px] h-[64px]" src="{% static 'frontend/vivid-sync-high-resolution-logo-transparent' %}" alt="Project Logo">
+                <img class="w-[128px] h-[113px]" src="{% static 'frontend/images/logos/vivid-sync-high-resolution-logo-transparent.png' %}" alt="Project Logo">
             </a>
         </nav>
     </header>
     
-    <main class="container mx-auto my-10 p-8 bg-white rounded-lg shadow-md text-center">
-        <h1 class="text-4xl font-bold mb-10">Choose account type</h1>
-        <div class="flex flex-col md:flex-row justify-center gap-10">
-            <!-- Influencer -->
-            <div class="flex-1">
-                <div class="p-6 border rounded-lg hover:shadow-lg transition-shadow">
-                    <img src="{% static 'frontend/images/influencer-icon.png' %}" alt="Influencer" class="mx-auto mb-4">
-                    <h2 class="text-2xl font-semibold mb-4">Influencer</h2>
-                    <p class="mb-4">Lets you check all the inboxes, shows you trending post, displays analytics and helps you reach more people.</p>
-                    <button class="bg-blue-500 text-white px-6 py-2 rounded-full hover:bg-blue-600">Select</button>
-                </div>
-            </div>
-            <!-- Content Creator -->
-            <div class="flex-1">
-                <div class="p-6 border rounded-lg hover:shadow-lg transition-shadow">
-                    <img src="{% static 'frontend/images/content-creator-icon.png' %}" alt="Content Creator" class="mx-auto mb-4">
-                    <h2 class="text-2xl font-semibold mb-4">Content Creator</h2>
-                    <p class="mb-4">Helps you on your reach, helps you in creating content using AI, creates trendy videos and Blogs, lets you track the reach and manage.</p>
-                    <button class="bg-blue-500 text-white px-6 py-2 rounded-full hover:bg-blue-600">Select</button>
-                </div>
-            </div>
-            <!-- Organization -->
-            <div class="flex-1">
-                <div class="p-6 border rounded-lg hover:shadow-lg transition-shadow">
-                    <img src="{% static 'frontend/images/organization-icon.png' %}" alt="Organization" class="mx-auto mb-4">
-                    <h2 class="text-2xl font-semibold mb-4">Organization</h2>
-                    <p class="mb-4">Work with your team, schedule posts, run ads, manage the team access and others in one place, it also analyses the scam emails to prevent fraud.</p>
-                    <button class="bg-blue-500 text-white px-6 py-2 rounded-full hover:bg-blue-600">Select</button>
-                </div>
-            </div>
-        </div>
-    </main>
+    <div id="root" class="w-full light">
+        <!-- Here will be mounted the SignUp React component -->
+    </div>
 
     <footer class="text-center py-4 text-gray-600">
         &copy; 2023 Vivid Sync. All rights reserved.

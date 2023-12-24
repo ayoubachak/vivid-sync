@@ -10,4 +10,5 @@ User = get_user_model()
 class VividUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username', 'email')
+        fields = ['username', 'bio', 'hashtags', 'gender', 'profile_picture']
+
