@@ -1,0 +1,41 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Choose your account type with Vivid Sync">
+    <meta name="keywords" content="account type, influencer, content creator, organization">
+    <meta name="author" content="Vivid Sync">
+    
+    <!-- Open Graph meta tags -->
+    <meta property="og:title" content="Choose Account Type - Vivid Sync">
+    <meta property="og:description" content="Select your account type to tailor your Vivid Sync experience.">
+    
+    <title>Personal Info - Vivid Sync</title>
+    <link rel="stylesheet" href="{% static 'frontend/assets/index.css' %}">
+</head>
+<body class="light">
+
+    <header class="border-b border-gray-200 light">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <!-- Logo -->
+            <a href="/" class="pl-35px">
+                <img class="w-[128px] h-[113px]" src="{% static 'frontend/images/logos/vivid-sync-high-resolution-logo-transparent.png' %}" alt="Project Logo">
+            </a>
+        </nav>
+    </header>
+    
+    <div id="root" class="w-full light">
+        <!-- Here will be mounted the SignUp React component -->
+    </div>
+
+    <footer class="text-center py-4 text-gray-600">
+        &copy; 2023 Vivid Sync. All rights reserved.
+    </footer>
+
+    <script type="module" src="{% static 'frontend/assets/main.js' %}"></script>
+
+</body>
+</html>

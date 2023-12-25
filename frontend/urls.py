@@ -9,9 +9,11 @@ urlpatterns = [
     # Authentication
     path('signup/', views.signup, name='signup'),
     path('signup/verify-email/', views.verify_email, name='signup-verify-email'),
-    path('terms-of-service/', views.terms_of_service, name='signup-verify-email'),
-    path('complete-profile/', views.complete_profile, name='signup-verify-email'),
-    
+    path('terms-of-service/', views.terms_of_service, name='terms-of-service'),
+    path('complete-profile/', views.complete_profile, name='complete-profile'),
+    path('complete-profile/account-type/', views.setup_account_type, name='setup-account-type'),
+    path('complete-profile/personal-info/', views.setup_personal_info, name='setup-personal-info'),
+
     path('login/', views.login, name='login'),
     path('logout/', views.custom_logout, name='logout'),
     path('me/', views.me, name='me'),

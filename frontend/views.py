@@ -37,16 +37,11 @@ def me(request):
     Redirects the user to the /profile page if authenticated.
     """
     from django.utils.crypto import get_random_string
-
     user = request.user
-    print(user)
     context = {
         'user': user,
         'current_year': datetime.now().year,  # Example of additional context
     }
-    print(f"{user.verification_code=}")
-    print(f"{user.verification_token=}")
-    # check if the email address is verified, if not redirect him to the verify email page
     if not user.email_verified:
         if not user.verification_code or not user.verification_token:
             # If not, generate them now and send a verification email
@@ -54,28 +49,36 @@ def me(request):
             user.verification_token = get_random_string(length=100)
             user.save(update_fields=['verification_code', 'verification_token'])
             send_verification_email(user, request)
-            print("Sending mail")
         return redirect('/signup/verify-email/')
-    # check if the user agreed to the terms, if not redirect him to the terms of service page
     if not user.agreed_to_terms:
         return redirect('/terms-of-service/')
-    # check if user completed profile
-    print(f"{user.account_type=}")
-    if not user.account_type :
-        return redirect('/complete-profile/')
-    # if not user.profile_completed:
-    #     return redirect('/complete-profile/')
+    if not user.profile_completed :
+        return redirect('/complete-profile/') 
 
     return render(request, 'profile/profile.html', context=context)
 
 from rest_framework import status
 
 @login_required(login_url='/login/')
+def setup_account_type(request):
+    # Logic for setting up account type
+    return render(request, 'frontend/profile/setup_account_type.html')
+
+@login_required(login_url='/login/')
+def setup_personal_info(request):
+    # Logic for completing personal information
+    return render(request, 'frontend/profile/setup_personal_info.html')
+
+
+@login_required(login_url='/login/')
 def complete_profile(request):
     user = request.user
-    if not user.account_type :
-        return render(request, 'frontend/profile/setup_account_type.html')
-    # Redirect to some other view if the account type is set
+    if not user.account_type:
+        return redirect('/complete-profile/account-type/')
+    if not user.profile_completed:
+        return redirect('/complete-profile/personal-info/')
+    
+    # Redirect to some other view if the account type is set and profile is completed
     return redirect('/me/')
 
 def custom_logout(request):

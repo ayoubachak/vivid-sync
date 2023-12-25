@@ -1,6 +1,6 @@
 import React  from 'react'; 
-import { AccountType } from '../../models/VividUser';
-import axiosInstance from '../../middleware/axiosMiddleware';
+import { AccountType } from '../../../models/VividUser';
+import axiosInstance from '../../../middleware/axiosMiddleware';
 
 const CHANGE_ACCOUNT_TYPE_MUTATION = `
   mutation ChangeAccountType($accountType: String!) {
@@ -71,10 +71,10 @@ const SetupAccountType: React.FC = () => {
         <div className="flex flex-col md:flex-row justify-center gap-10">
              {/* Influencer */}
             <AccountTypeCard 
-            accountType={AccountType.Influencer} 
-            image={window.location.origin + "/static/frontend/images/pages/profile/account type/influencer.png"} 
-            onClick={setAccountType}
-            isSelected={accountType === AccountType.Influencer}
+              accountType={AccountType.Influencer} 
+              image={window.location.origin + "/static/frontend/images/pages/profile/account type/influencer.png"} 
+              onClick={setAccountType}
+              isSelected={accountType === AccountType.Influencer}
             />
              {/* Content Creator */}
             <AccountTypeCard 

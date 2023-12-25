@@ -6,6 +6,9 @@ from django.utils.translation import gettext_lazy as _
 from django.utils.crypto import get_random_string
 from django.apps import apps
 
+def user_directory_path(instance, filename):
+    # file will be uploaded to MEDIA_ROOT/user_<id>/images/profile_pic/<filename>
+    return f'{instance.id}/images/profile_pic/{filename}'
 
 class AccountType(models.TextChoices):
     INFLUENCER = 'Influencer', _('Influencer')
@@ -19,7 +22,7 @@ class GenderChoices(models.TextChoices):
 class VividUser(AbstractUser):        
 
 
-    profile_picture = models.ImageField(upload_to='media/images/profile_pics/', blank=True, null=True)
+    profile_picture = models.ImageField(upload_to=user_directory_path, blank=True, null=True)
     email_verified = models.BooleanField(default=False)
     bio = models.TextField(blank=True, null=True)
     verification_code = models.CharField(max_length=6, blank=True)

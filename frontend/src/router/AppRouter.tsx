@@ -6,7 +6,8 @@ import Signup from '../pages/auth/Signup';
 import Dashboard from '../pages/profile/Dashboard';
 import VerifyEmail from '../pages/auth/VerifyEmail';
 import TermsOfService from '../pages/auth/TermsOfService';
-import SetupAccountType from '../pages/profile/SetupAccountType';
+import SetupAccountType from '../pages/profile/setup/SetupAccountType';
+import SetupPersonalInfo from '../pages/profile/setup/SetupPersonalInfo';
 
 const PrivateRoute = ({ children }: { children: JSX.Element }) => {
     const { user } = useAuth();
@@ -21,7 +22,8 @@ const AppRouter = () => {
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/signup/verify-email" element={<VerifyEmail />} />
                 <Route path="/terms-of-service" element={<TermsOfService />} />
-                <Route path="/complete-profile" element={<SetupAccountType />} />
+                <Route path="/complete-profile/account-type" element={<SetupAccountType />} />
+                <Route path="/complete-profile/personal-info" element={<SetupPersonalInfo />} />
                 <Route 
                     path="/dashboard" 
                     element={
