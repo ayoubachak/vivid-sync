@@ -10,6 +10,9 @@ from rest_framework.decorators import api_view
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework import status
 from django.core.files.storage import default_storage
+from django.http import JsonResponse
+from django.contrib.auth import get_user_model
+import re
 
 
 class VividUserViewSet(viewsets.ModelViewSet):
@@ -55,3 +58,21 @@ def delete_profile_picture(request):
         user.save()
 
     return Response({"message": "Profile picture deleted successfully."}, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])  # Adjust the permissions as needed
+def check_username_availability(request, username):
+    User = get_user_model()
+
+    # Regex for valid usernames (letters, numbers, underscores, periods)
+    if not re.match(r'^[a-zA-Z0-9._]+$', username):
+        return JsonResponse({'error': 'Username contains invalid characters.'}, status=400)
+
+    if User.objects.filter(username=username).exists():
+        if request.user.username == username:
+            return JsonResponse({'available': True, 'message': 'Username is available.'})
+        else:
+            return JsonResponse({'available': False, 'message': 'Username is already taken.'})
+    else:
+        return JsonResponse({'available': True, 'message': 'Username is available.'})

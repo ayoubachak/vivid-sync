@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axiosInstance from '../../../middleware/axiosMiddleware';
+import { debounce } from 'lodash';
 
 // Define a Gender type
 type Gender = 'male' | 'female';
@@ -55,17 +56,17 @@ const SetupPersonalInfo: React.FC = () => {
         }
     };
 
-      const handleDeletePic = async () => {
+    const handleDeletePic = async () => {
         setIsUploading(true);
         try {
-          await axiosInstance.delete('/api/users/profile-picture/delete/'); // Assuming this is your API endpoint
-          setProfilePic('');
+            await axiosInstance.delete('/api/users/profile-picture/delete/'); // Assuming this is your API endpoint
+            setProfilePic('');
         } catch (error) {
-          console.error('Error deleting the file', error);
+            console.error('Error deleting the file', error);
         } finally {
-          setIsUploading(false);
+            setIsUploading(false);
         }
-      };
+    };
 
     const getProfilePicSrc = () => {
       if (profilePic) return profilePic;
@@ -73,7 +74,36 @@ const SetupPersonalInfo: React.FC = () => {
         ? window.location.origin + "/static/frontend/images/pages/profile/avatars/male.svg"
         : window.location.origin + "/static/frontend/images/pages/profile/avatars/female.svg";
     };
-  
+    
+    const checkUsernameAvailability = debounce(async (username) => {
+        try {
+            // Replace with the actual API call
+            const response = await axiosInstance.get(`/api/users/check/username/${username}/`);
+            setUsernameAvailability(response.data.message);
+        } catch (error) {
+            console.error('Error checking username availability', error);
+            setUsernameAvailability("Error checking username availability.");
+        }
+    }, 500);  
+    const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const username = e.target.value;
+        // Regular expression for valid usernames
+        const validUsernameRegex = /^[a-zA-Z0-9._]+$/;
+    
+        // Reset previous availability message
+        setUsernameAvailability("");
+    
+        // Check if the username only contains valid characters
+        if (!validUsernameRegex.test(username)) {
+            setUsernameAvailability("Username contains invalid characters.");
+            return; // Stop further execution if invalid
+        }
+    
+        // If valid, check availability from backend
+        checkUsernameAvailability(username);
+    };
+    
+
     return (
       <main className="container mx-auto my-10 p-8 rounded-lg">
         <h1 className="text-4xl font-bold text-center mb-10">Complete Profile Setup</h1>
@@ -149,6 +179,7 @@ const SetupPersonalInfo: React.FC = () => {
                         id="username"
                         placeholder="@gorlockthedestroyer"
                         className="sh-[48px] bg-white rounded-[10px] border-2 border-slate-700 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                        onChange={handleUsernameChange}
                         required
                     />
                     <div className="text-sm text-gray-600">{usernameAvailability}</div>
