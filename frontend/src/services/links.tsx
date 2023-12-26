@@ -1,1 +1,0 @@
-export const MEDIA_URL = window.location.protocol + '//' + window.location.host + '/media/';

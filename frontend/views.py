@@ -109,3 +109,8 @@ def pricing_page(request):
 def tools_page(request):
     return render(request, 'pages/tools_page.html', {'current_year': datetime.now().year})
 
+
+
+@login_required(login_url='/login/')
+def dashboard(request):
+    return render(request, 'frontend/dashboard/dashboard.html')

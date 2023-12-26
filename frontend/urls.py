@@ -20,6 +20,9 @@ urlpatterns = [
     path('logout/', views.custom_logout, name='logout'),
     path('me/', views.me, name='me'),
 
+    # add a path to the dashboard
+    path('dashboard/', views.dashboard, name='dashboard'),
+
     # Django templates
     path('', views.landing_page, name='landing_page'),
     path('tools/', views.tools_page, name='tools_page'),

@@ -1,18 +1,53 @@
 {% load static %}
 
-<!-- base.html or another template -->
 <!DOCTYPE html>
 <html lang="en">
-  <title>Vivid Sync</title>
 <head>
-    <!-- Include your main CSS file -->
-    <link rel="stylesheet" href="{% static 'frontend/assets/index.css' %}"> 
-    <link rel="icon" type="image/png" href="{% static 'frontend/logo.png' %}" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    {% block seo %}
+    <meta name="description" content="Default Description">
+    <meta name="keywords" content="Default Keywords">
+    <meta name="author" content="Default Author">
 
+    <!-- Open Graph meta tags -->
+    <meta property="og:title" content="Default OG Title">
+    <meta property="og:description" content="Default OG Description">
+    {% endblock %}
+
+    {% block title %}
+    <title>Default Title</title>
+    {% endblock %}
+
+    <link rel="stylesheet" href="{% static 'frontend/assets/index.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'frontend/logo.png' %}" />
 </head>
-<body>
-    <div id="root"></div>
-    <!-- Include your main JavaScript file -->
-    <script type="module" src="{% static 'frontend/assets/main.js' %}"></script> 
+<body class="light">
+    {% block header %}
+    <header class="border-b border-gray-200 light">
+        <!-- Header content -->
+    </header>
+    {% endblock %}
+
+    {% block content %}
+    
+    {% endblock %}
+    
+    {% block react_app %}
+      <div id="root" class="w-full light">
+        <!-- Here will be mounted the SignUp React component -->
+      </div>
+    {% endblock %}
+
+    {% block footer %}
+    <footer class="text-center py-4 text-gray-600">
+        &copy; 2023 Vivid Sync. All rights reserved.
+    </footer>
+    {% endblock %}
+
+    {% block extra_js %}
+    {% endblock extra_js %}
+    <script type="module" src="{% static 'frontend/assets/main.js' %}"></script>
 </body>
 </html>

@@ -18,7 +18,7 @@ function getCookie(name : string) {
 const csrftoken = getCookie('csrftoken');
 
 const axiosInstance = axios.create({
-    baseURL: 'http://127.0.0.1:8000',
+    baseURL: window.origin,
     headers: {
         'X-CSRFToken': csrftoken, // this is important for the hybrid approach between django and react
     },

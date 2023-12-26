@@ -1,11 +1,12 @@
 import React, { useEffect,  useState } from 'react';
 import axiosInstance from '../../../middleware/axiosMiddleware';
 import { debounce } from 'lodash';
-import { MEDIA_URL } from '../../../services/links';
+import { MEDIA_URL } from '../../../services/links/links';
 import { useNavigate } from 'react-router-dom';
+import { Gender } from '../../../models/VividUser';
 
 // Define a Gender type
-type Gender = 'M' | 'F';
+
 
 const GET_MY_PROFILE = `
 query {
