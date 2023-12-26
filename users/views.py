@@ -43,7 +43,7 @@ def upload_profile_picture(request):
     if file.size > 2 * 1024 * 1024:  # 2 MB
         return Response({"error": "File size exceeds 2 MB."}, status=status.HTTP_400_BAD_REQUEST)
     
-    file_name = default_storage.save(f'{user.id}/images/profile_pic/{file.name}', file)
+    file_name = default_storage.save(f'users/{user.id}/images/profile_pic/{file.name}', file)
     user.profile_picture = file_name
     user.save()
     return Response({"message": "Profile picture updated successfully.", "profile_picture_url": user.profile_picture.url}, status=status.HTTP_200_OK)

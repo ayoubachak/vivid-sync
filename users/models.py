@@ -8,7 +8,7 @@ from django.apps import apps
 
 def user_directory_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/user_<id>/images/profile_pic/<filename>
-    return f'{instance.id}/images/profile_pic/{filename}'
+    return f'users/{instance.id}/images/profile_pic/{filename}'
 
 class AccountType(models.TextChoices):
     INFLUENCER = 'Influencer', _('Influencer')
@@ -42,6 +42,7 @@ class VividUser(AbstractUser):
         null=True,
         blank=True
     )
+    website_link = models.URLField(max_length=255, blank=True, null=True)
     profile_completed = models.BooleanField(default=False)
     hashtags = models.ManyToManyField('social.Hashtag', related_name='users')
 

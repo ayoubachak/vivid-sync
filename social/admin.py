@@ -56,3 +56,9 @@ from .models import Hashtag
 class HashtagAdmin(admin.ModelAdmin):
     list_display = ('name',)
 
+from .models import SocialLink
+@admin.register(SocialLink)
+class SocialLinkAdmin(admin.ModelAdmin):
+    list_display = ('user', 'platform', 'url')
+    list_filter = ('platform',)
+    search_fields = ('handle', 'user__username')

@@ -4,6 +4,11 @@ from django.db import models
 from users.models import VividUser
 from django.utils import timezone
 
+def social_link_icon_directory_path(instance, filename):
+    # file will be uploaded to MEDIA_ROOT/users/user_<id>/images/profile_pic/<filename>
+    return f'social_links/{instance.id}/icon/{filename}'
+
+
 class Hashtag(models.Model):
     name = models.CharField(max_length=100, unique=True)
     def __str__(self):
@@ -85,3 +90,20 @@ class Reply(models.Model):
     def __str__(self):
         return f"Reply by {self.external_user.username} on comment {self.comment.id}"
 
+
+class SocialLink(models.Model):
+    PLATFORM_CHOICES = [
+        ('Instagram', 'Instagram'),
+        ('Facebook', 'Facebook'),
+        ('TikTok', 'TikTok'),
+        ('YouTube', 'YouTube'),
+        ('LinkedIn', 'LinkedIn'),
+        # Add more as needed
+    ]
+
+    user = models.ForeignKey(VividUser, on_delete=models.CASCADE, related_name='social_links')
+    platform = models.CharField(max_length=100, choices=PLATFORM_CHOICES)
+    url = models.URLField(max_length=255)
+
+    def __str__(self):
+        return f"{self.user.username}'s {self.platform} link"
