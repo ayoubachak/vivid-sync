@@ -2,16 +2,26 @@
 
 import graphene
 from graphene_django import DjangoObjectType
+
+from social.schema import HashtagType
 from .models import AccountType, VividUser
 from graphene import relay
 from django.db.models import Q
 from graphql_jwt.decorators import login_required
 
 class VividUserType(DjangoObjectType):
+
+    hashtags = graphene.List(HashtagType)
+    
     class Meta:
         model = VividUser
         fields = "__all__"
         interfaces = (relay.Node, )
+    
+    def resolve_hashtags(self, info):
+        # Assuming the relationship name in the VividUser model is `hashtags`
+        return self.hashtags.all()
+
 
 class CreateUser(graphene.Mutation):
     class Arguments:

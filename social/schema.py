@@ -1,7 +1,7 @@
 import graphene
 from graphene_django import DjangoObjectType
 from graphene import relay
-from .models import SocialMediaPlatform, SocialMediaProfile, Post, Comment, Reply, ExternalUser
+from .models import SocialMediaPlatform, SocialMediaProfile, Post, Comment, Reply, ExternalUser, Hashtag
 
 class SocialMediaPlatformType(DjangoObjectType):
     class Meta:
@@ -39,6 +39,12 @@ class ExternalUserType(DjangoObjectType):
         fields = "__all__"
         interfaces = (relay.Node, )
 
+class HashtagType(DjangoObjectType):
+    class Meta:
+        model = Hashtag
+        fields = '__all__'
+        interfaces = (relay.Node, )
+
 class Query(graphene.ObjectType):
     all_social_media_platforms = graphene.List(SocialMediaPlatformType)
     all_social_media_profiles = graphene.List(SocialMediaProfileType)
@@ -46,6 +52,7 @@ class Query(graphene.ObjectType):
     all_comments = graphene.List(CommentType)
     all_replies = graphene.List(ReplyType)
     all_external_users = graphene.List(ExternalUserType)
+    all_hashtags = graphene.List(HashtagType)
 
     def resolve_all_social_media_platforms(root, info):
         return SocialMediaPlatform.objects.all()
@@ -64,4 +71,8 @@ class Query(graphene.ObjectType):
 
     def resolve_all_external_users(root, info):
         return ExternalUser.objects.all()
+    
+    def resolve_all_hashtags(root, info):
+        return Hashtag.objects.all()
+    
 

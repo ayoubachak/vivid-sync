@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import SocialMediaPlatform, SocialMediaProfile, Post, Comment, Reply
+from .models import SocialMediaPlatform, SocialMediaProfile, Post, Comment, Reply, Hashtag
 
 class SocialMediaPlatformSerializer(serializers.ModelSerializer):
     class Meta:
@@ -25,3 +25,9 @@ class ReplySerializer(serializers.ModelSerializer):
     class Meta:
         model = Reply
         fields = '__all__'
+
+class HashtagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Hashtag
+        fields = '__all__'
+

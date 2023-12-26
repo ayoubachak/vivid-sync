@@ -3,7 +3,9 @@ from rest_framework.response import Response
 
 from rest_framework import viewsets
 from rest_framework.permissions import AllowAny
-from .models import VividUser
+
+from social.models import Hashtag
+from .models import GenderChoices, VividUser
 from .serializers import VividUserSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view
@@ -13,7 +15,7 @@ from django.core.files.storage import default_storage
 from django.http import JsonResponse
 from django.contrib.auth import get_user_model
 import re
-
+import base64
 
 class VividUserViewSet(viewsets.ModelViewSet):
     queryset = VividUser.objects.all()
@@ -76,3 +78,48 @@ def check_username_availability(request, username):
             return JsonResponse({'available': False, 'message': 'Username is already taken.'})
     else:
         return JsonResponse({'available': True, 'message': 'Username is available.'})
+    
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def update_user_profile(request):
+    user = request.user
+    data = request.data
+
+    # Update username
+    username = data.get('username')
+    if username and username != user.username:
+        if not re.match(r'^[a-zA-Z0-9._]+$', username):
+            return Response({"error": "Username contains invalid characters."}, status=status.HTTP_400_BAD_REQUEST)
+        if VividUser.objects.exclude(pk=user.pk).filter(username=username).exists():
+            return Response({"error": "Username is already taken."}, status=status.HTTP_400_BAD_REQUEST)
+        user.username = username
+
+    # Update bio
+    bio = data.get('bio')
+    if bio is not None:
+        user.bio = bio
+    else :
+        return Response({"error": "User must fill the Bio"}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Update gender
+    gender = data.get('gender')
+    if gender in [choice[0] for choice in GenderChoices.choices]:
+        user.gender = gender
+    else :
+        return Response({"error": "User must choose a gender"}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Update hashtags
+    hashtag_names = data.get('hashtags')
+    if hashtag_names is not None:
+        # Clear existing hashtags
+        user.hashtags.clear()
+        for name in hashtag_names:
+            hashtag, created = Hashtag.objects.get_or_create(name=name)
+            user.hashtags.add(hashtag)
+    else:
+        return Response({"error": "Missing Hashtags"}, status=status.HTTP_400_BAD_REQUEST)
+
+    user.profile_completed = True
+    user.save()
+    return Response({"message": "Profile updated successfully."}, status=status.HTTP_200_OK)
