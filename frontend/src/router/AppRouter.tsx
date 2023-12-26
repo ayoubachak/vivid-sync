@@ -8,6 +8,8 @@ import VerifyEmail from '../pages/auth/VerifyEmail';
 import TermsOfService from '../pages/auth/TermsOfService';
 import SetupAccountType from '../pages/profile/setup/SetupAccountType';
 import SetupPersonalInfo from '../pages/profile/setup/SetupPersonalInfo';
+import SetupSocialLinks from '../pages/profile/setup/SetupSocialLinks';
+import SetupCongratulations from '../pages/profile/setup/SetupCongratulations';
 
 const PrivateRoute = ({ children }: { children: JSX.Element }) => {
     const { user } = useAuth();
@@ -24,6 +26,9 @@ const AppRouter = () => {
                 <Route path="/terms-of-service" element={<TermsOfService />} />
                 <Route path="/complete-profile/account-type" element={<SetupAccountType />} />
                 <Route path="/complete-profile/personal-info" element={<SetupPersonalInfo />} />
+                <Route path="/complete-profile/last-steps" element={<SetupSocialLinks />} />
+                <Route path="/complete-profile/congratulations" element={<SetupCongratulations />} />
+                
                 <Route 
                     path="/dashboard" 
                     element={

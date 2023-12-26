@@ -69,6 +69,16 @@ def setup_personal_info(request):
     # Logic for completing personal information
     return render(request, 'frontend/profile/setup_personal_info.html')
 
+@login_required(login_url='/login/')
+def congratulations(request):
+    # Logic for serving the congratulations page
+    return render(request, 'frontend/profile/setup_congratulations.html')
+
+@login_required(login_url='/login/')
+def last_steps(request):
+    # Logic for serving the last steps page
+    return render(request, 'frontend/profile/setup_social_links.html')
+
 
 @login_required(login_url='/login/')
 def complete_profile(request):

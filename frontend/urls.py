@@ -13,6 +13,8 @@ urlpatterns = [
     path('complete-profile/', views.complete_profile, name='complete-profile'),
     path('complete-profile/account-type/', views.setup_account_type, name='setup-account-type'),
     path('complete-profile/personal-info/', views.setup_personal_info, name='setup-personal-info'),
+    path('complete-profile/last-steps/', views.last_steps, name='setup-last-steps'),
+    path('complete-profile/congratulations/', views.congratulations, name='setup-congratulations'),
 
     path('login/', views.login, name='login'),
     path('logout/', views.custom_logout, name='logout'),

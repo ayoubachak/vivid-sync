@@ -3,6 +3,7 @@ import axiosInstance from '../../../middleware/axiosMiddleware';
 import { debounce } from 'lodash';
 import useOutsideClick from '../../../hooks/useOutsideClick';
 import { MEDIA_URL } from '../../../services/links';
+import { useNavigate } from 'react-router-dom';
 
 // Define a Gender type
 type Gender = 'M' | 'F';
@@ -27,7 +28,8 @@ query {
 const SetupPersonalInfo: React.FC = () => {
     
     const suggestionsRef = useRef(null);
-    
+    const navigate = useNavigate();
+
     const [gender, setGender] = useState<Gender>('M');
     const [profilePic, setProfilePic] = useState<string>('');
     const [isUploading, setIsUploading] = useState<boolean>(false);
@@ -198,7 +200,8 @@ const SetupPersonalInfo: React.FC = () => {
     
                 if (response.status === 200) {
                     console.log('Profile updated successfully');
-                    window.location.href = '/me/';
+                    // window.location.href = '/me/';
+                    navigate('/last-steps');
                 } else {
                     console.error('Error updating profile:', response.data.error);
                 }
