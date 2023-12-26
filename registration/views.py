@@ -79,8 +79,6 @@ class VerifyEmailView(APIView):
         # Resend the verification email if needed
         user = request.user
         token = request.query_params.get('token')
-        print(f"{token=}") 
-        print(f"{request.data=}") 
         try:
             if user.verification_token == token:
                 if not user.email_verified:

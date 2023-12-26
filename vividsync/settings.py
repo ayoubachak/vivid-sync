@@ -68,6 +68,8 @@ INSTALLED_APPS = [
     
     # apps
     'users',
+    'organizations',
+    'teams',
     'content',
     'analytics',
     'social',

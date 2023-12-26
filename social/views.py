@@ -93,7 +93,6 @@ def update_social_links(request):
 def get_social_links_by_user(request):
     # Get the current authenticated user
     user = request.user
-    print(user.username)
     # Retrieve all social links for the user
     social_links = SocialLink.objects.filter(user=user)
 
@@ -108,9 +107,7 @@ def get_social_links_by_user(request):
     }
 
     # Map the social links to their respective platforms
-    print("list(social_links)=",list(social_links))
     for link in social_links:
-        print("link=",link)
         if link.platform == 'Instagram':
             links_data["instagram"] = link.url
         elif link.platform == 'Facebook':

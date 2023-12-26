@@ -109,17 +109,6 @@ def update_user_profile(request):
     else :
         return Response({"error": "User must choose a gender"}, status=status.HTTP_400_BAD_REQUEST)
 
-    # Update hashtags
-    hashtag_names = data.get('hashtags')
-    if hashtag_names is not None:
-        # Clear existing hashtags
-        user.hashtags.clear()
-        for name in hashtag_names:
-            hashtag, created = Hashtag.objects.get_or_create(name=name)
-            user.hashtags.add(hashtag)
-    else:
-        return Response({"error": "Missing Hashtags"}, status=status.HTTP_400_BAD_REQUEST)
-
     user.profile_completed = True
     user.save()
     return Response({"message": "Profile updated successfully."}, status=status.HTTP_200_OK)

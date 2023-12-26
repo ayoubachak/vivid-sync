@@ -56,6 +56,8 @@ urlpatterns = [
     path('api/content/', include('content.urls')),
     path('api/social/', include('social.urls')),
     path('api/users/', include('users.urls')),
+    path('api/organizations/', include('organizations.urls')),
+    path('api/teams/', include('teams.urls')),
     # Front End Application
     path('', include('frontend.urls')),
 

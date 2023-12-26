@@ -83,11 +83,8 @@ def last_steps(request):
 @login_required(login_url='/login/')
 def complete_profile(request):
     user = request.user
-    if not user.account_type:
-        return redirect('/complete-profile/account-type/')
     if not user.profile_completed:
         return redirect('/complete-profile/personal-info/')
-    
     # Redirect to some other view if the account type is set and profile is completed
     return redirect('/me/')
 

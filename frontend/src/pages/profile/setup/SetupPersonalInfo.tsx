@@ -1,7 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect,  useState } from 'react';
 import axiosInstance from '../../../middleware/axiosMiddleware';
 import { debounce } from 'lodash';
-import useOutsideClick from '../../../hooks/useOutsideClick';
 import { MEDIA_URL } from '../../../services/links';
 import { useNavigate } from 'react-router-dom';
 
@@ -17,17 +16,12 @@ query {
         gender
         bio
       	profilePicture
-        hashtags {
-            id
-            name
-        }
     }
 }
 `;
 
 const SetupPersonalInfo: React.FC = () => {
     
-    const suggestionsRef = useRef(null);
     const navigate = useNavigate();
 
     const [gender, setGender] = useState<Gender>('M');
@@ -41,17 +35,8 @@ const SetupPersonalInfo: React.FC = () => {
     const [usernameAvailability, setUsernameAvailability] = useState("");
     const [usernameValid, setUsernameValid] = useState<boolean>(false);
     const [usernamePlaceHolder, setUsernamePlaceHolder] = useState<string>('');
-    // Hashtags
-    const [hashtagInput, setHashtagInput] = useState('');
-    const [suggestedHashtags, setSuggestedHashtags] = useState<Hashtag[]>([]); // This should be an array of hashtag objects
-    const [selectedHashtags, setSelectedHashtags] = useState<Hashtag[]>([]);
-    // Hide suggestions when clicking outside
-    const hideSuggestions = () => {
-        setSuggestedHashtags([]);
-    };
 
-    // Hide Suggestion when clicking outside
-    useOutsideClick(suggestionsRef, hideSuggestions);
+
 
     const handleGenderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setGender(e.target.value as Gender);
@@ -141,48 +126,10 @@ const SetupPersonalInfo: React.FC = () => {
         checkUsernameAvailability(newUsername);
     };
     
-    // Hashtags
-    const fetchHashtags = async (inputValue: string) => {
-        if (!inputValue.trim()) return [];
-    
-        try {
-            const response = await axiosInstance.get(`/api/social/hashtag/suggest_hashtags/`, {
-                params: { tag: inputValue }
-            });
-            
-            return response.data; // Assuming the API returns an array of hashtags
-        } catch (error) {
-            console.error('Error fetching hashtags', error);
-            return [];
-        }
-    };
-    
-    const handleHashtagInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const inputValue = e.target.value;
-        setHashtagInput(inputValue);
-    
-        if (inputValue) {
-            const fetchedHashtags = await fetchHashtags(inputValue);
-            setSuggestedHashtags(fetchedHashtags);
-        } else {
-            setSuggestedHashtags([]);
-        }
-    };
-    
-    const handleSelectHashtag = (hashtag : Hashtag) => {
-        if (!selectedHashtags.some((ht) => ht.id === hashtag.id)) {
-            setSelectedHashtags([...selectedHashtags, hashtag]);
-            setHashtagInput('');
-            hideSuggestions();
-        }
-    };
-
-    const handleRemoveHashtag = (hashtagId: number) => {
-        setSelectedHashtags(selectedHashtags.filter((hashtag) => hashtag.id !== hashtagId));
-    };
+  
 
     const checkFormCompletion = (): boolean => {
-        return usernameValid && !!username && !!bio && selectedHashtags.length >= 3;
+        return usernameValid && !!username && !!bio;
     };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -195,13 +142,12 @@ const SetupPersonalInfo: React.FC = () => {
                     username: username,
                     bio: bio,
                     gender: gender,
-                    hashtags: selectedHashtags.map((ht) => ht.name), // Send only IDs or format as required
                 });
     
                 if (response.status === 200) {
                     console.log('Profile updated successfully');
                     // window.location.href = '/me/';
-                    navigate('/last-steps');
+                    navigate('/complete-profile/last-steps');
                 } else {
                     console.error('Error updating profile:', response.data.error);
                 }
@@ -231,7 +177,6 @@ const SetupPersonalInfo: React.FC = () => {
                     setBio(data.me.bio);
                     data.me.gender && setGender(data.me.gender as Gender);
                     data.me.profilePicture && setProfilePic(MEDIA_URL + data.me.profilePicture);
-                    setSelectedHashtags(data.me.hashtags);
                 }
             } catch (error) {
                 console.error('Error fetching user data', error);
@@ -337,44 +282,7 @@ const SetupPersonalInfo: React.FC = () => {
                     required
                     />
                 </div>
-                <div className="mb-4 relative"> {/* Add relative positioning for suggestions box */}
-                    <label htmlFor="hashtags" className="block text-2xl font-bold mb-2 text-left">
-                        Some Hashtags you are interested in: <span className='font-semibold '>(at least 3)<span className='text-purple-600'>*</span></span>
-                    </label>
-                    <input
-                        type="text"
-                        id="hashtags"
-                        placeholder="#travel, #france, #fyp"
-                        value={hashtagInput}
-                        className="h-12 bg-white font-semibold rounded-lg border-2 border-slate-700 w-full px-3 py-2 text-gray-700 mb-3 focus:outline-none focus:shadow-outline"
-                        onChange={handleHashtagInputChange}
-                    />
-                    <div ref={suggestionsRef} className="absolute font-semibold top-full left-0 right-0 bg-white border-slate-300 max-h-24 overflow-y-auto z-10">
-                        {suggestedHashtags.map((hashtag) => (
-                            <div 
-                                    key={hashtag.id} 
-                                    onClick={() => handleSelectHashtag(hashtag)} 
-                                    className="p-2 cursor-pointer text-left"
-                                    tabIndex={0} 
-                                >
-                                #{hashtag.name}
-                            </div>
-                        ))}
-                    </div>
-                    <div className="flex flex-wrap font-semibold">
-                        {selectedHashtags.map((hashtag) => (
-                            <div 
-                                key={hashtag.id} 
-                                onClick={() => handleRemoveHashtag(hashtag.id)} 
-                                className="inline-block m-1 p-2 bg-gray-200 rounded-full cursor-pointer"
-                                tabIndex={0} 
-                            >
-                                {hashtag.name}
-                                <span className="ml-2 text-red-500">x</span>
-                            </div>
-                        ))}
-                    </div>
-                </div>
+                
             </section>
             {checkFormCompletion() && (
                 <div className="w-full md:w-auto md:mt-0 mt-4 md:ml-auto"> {/* Adjust width and margin for desktop view */}

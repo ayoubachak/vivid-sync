@@ -44,7 +44,6 @@ class VividUser(AbstractUser):
     )
     website_link = models.URLField(max_length=255, blank=True, null=True)
     profile_completed = models.BooleanField(default=False)
-    hashtags = models.ManyToManyField('social.Hashtag', related_name='users')
 
     def info(self):
         return {
@@ -65,12 +64,3 @@ class VividUser(AbstractUser):
             self.verification_token = get_random_string(length=100)
         super().save(*args, **kwargs)
     
-    def update_hashtags(self, hashtags):
-        # Remove all hashtags from the user
-        self.hashtags.clear()
-
-        # Add the new hashtags
-        for hashtag in hashtags:
-            self.hashtags.add(hashtag)
-        
-        self.save()
