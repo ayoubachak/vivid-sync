@@ -10,7 +10,7 @@ const Dashboard: React.FC = () => {
  
   return (
     <div className="flex h-screen">
-    <SideMenu collapsed={collapsed} toggleSidebar={toggleSidebar} />
+      <SideMenu collapsed={collapsed} toggleSidebar={toggleSidebar} />
       <div className="flex-1 flex flex-col">
         <TopMenu />
         <main className="flex-1 overflow-x-hidden overflow-y-auto p-4">

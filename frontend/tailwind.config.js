@@ -6,6 +6,7 @@ module.exports = {
     "./src/**/*.{js,jsx,ts,tsx}",  // Path to your JavaScript or TypeScript files
     // Add other paths that include Tailwind classes
   ],
+  darkMode: 'class',  
   theme: {
     extend: {
       colors: {

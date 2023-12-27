@@ -1,2 +1,14 @@
 import { STATIC_URL } from "./links";
 export const NOTIFICATION_BELL = STATIC_URL +'images/icons/dashboard/notification_bell.svg';
+export const CREATE_ICON = STATIC_URL +'images/icons/dashboard/create.svg';
+export const ACCOUNTS_ICON = STATIC_URL +'images/icons/dashboard/accounts.svg';
+export const ADS_ICON = STATIC_URL +'images/icons/dashboard/ads.svg';
+export const ANALYSE_ICON = STATIC_URL +'images/icons/dashboard/analyse.svg';
+export const FEED_ICON = STATIC_URL +'images/icons/dashboard/feed.svg';
+export const HOME_ICON = STATIC_URL +'images/icons/dashboard/home.svg';
+export const INBOX_ICON = STATIC_URL +'images/icons/dashboard/inbox.svg';
+export const LOGOUT_ICON = STATIC_URL +'images/icons/dashboard/logout.svg';
+export const SCHEDULE_ICON = STATIC_URL +'images/icons/dashboard/schedule.svg';
+export const SETTINGS_ICON = STATIC_URL +'images/icons/dashboard/settings.svg';
+export const TEAMS_ICON = STATIC_URL +'images/icons/dashboard/teams.svg';
+export const SIDEBAR_ICON = STATIC_URL +'images/icons/dashboard/sidebar.svg';
