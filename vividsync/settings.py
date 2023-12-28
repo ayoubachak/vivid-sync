@@ -24,15 +24,27 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-uja+63^-hp8lslb1fn5h!o#jvz81_1wmbdt6d+j!0zo80d=x3r'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 SITE_ID = 1
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 APPEND_SLASH = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS=['*']
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_WHITELIST = (
+  'http://localhost:8000',
+  'http://localhost:5173',
+  'http://127.0.0.1:5173',
+  'http://127.0.0.1:8000',
+)
+# CORS_ALLOWED_ORIGINS =[
+#     "http://127.0.0.1:8000",
+#     "http://localhost:8000",
+#     "http://127.0.0.1:5173",
+#     "http://localhost:5173",
+# ]
 
 # SMTP Setup
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -65,7 +77,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.facebook', 
     'allauth.socialaccount.providers.twitter', 
     'allauth.socialaccount.providers.github', 
-    
+    # for cors
+    'corsheaders', 
     # apps
     'users',
     'organizations',
@@ -81,12 +94,16 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    # needed for cors
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # needed by allauth
     "allauth.account.middleware.AccountMiddleware",
+    # needed by cors
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'vividsync.urls'

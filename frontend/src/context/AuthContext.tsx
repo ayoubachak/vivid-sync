@@ -1,7 +1,10 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import axiosInstance from '../middleware/axiosMiddleware';
+import { VividUser } from '../models/VividUser';
 
 type AuthContextType = {
-    user: any; 
+    user: VividUser | null; 
+    loading: boolean;
     login: (user: any) => void; 
     logout: () => void;
 };
@@ -15,7 +18,21 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-    const [user, setUser] = useState(null);
+    const [user , setUser] = useState<VividUser | null>(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        setLoading(true);
+        axiosInstance.get('/api/users/me/info/')
+        .then(response => {
+            setUser(response.data);
+            setLoading(false);
+        })
+        .catch(() => {
+            setUser(null);
+            setLoading(false);
+        });
+    }, []);
 
     const login = (userData: any) => {
         // Replace 'any' with your user type
@@ -32,7 +49,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     
 
     return (
-        <AuthContext.Provider value={{ user, login, logout }}>
+        <AuthContext.Provider value={{ user, loading, login, logout }}>
             {children}
         </AuthContext.Provider>
     );

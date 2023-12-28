@@ -1,7 +1,7 @@
 // src/components/Dashboard/SideMenu.tsx
 import React from 'react';
 import { LOGO_ICON } from '../../../services/links/icons';
-import { ACCOUNTS_ICON, ADS_ICON, ANALYSE_ICON, CREATE_ICON, FEED_ICON, HOME_ICON, INBOX_ICON, LOGOUT_ICON, SCHEDULE_ICON, SETTINGS_ICON, SIDEBAR_ICON, TEAMS_ICON } from '../../../services/links/dashboard_icons';
+import { ACCOUNTS_ICON, ADS_ICON, ANALYSE_ICON, CREATE_ICON, FEED_ICON, HOME_ICON, INBOX_ICON, LOGOUT_ICON, SCHEDULE_ICON, SETTINGS_ICON,  TEAMS_ICON } from '../../../services/links/dashboard_icons';
 
 interface SideMenuProps {
   collapsed: boolean;
@@ -61,19 +61,15 @@ const SideMenu: React.FC<SideMenuProps> = ({ collapsed, toggleSidebar }) => {
   ];
 
   return (
-    <aside className={`sidebar ${collapsed ? 'w-20' : 'w-64'} transition-width duration-300 h-screen light text-white flex flex-col justify-between border-r-2 border-color-primary`}>
-      <div>
+    <aside className={`sidebar ${collapsed ? 'w-20' : 'w-64'} transition-width duration-300 h-screen light text-white flex flex-col justify-between border-r-2 border-color-primary overflow-y-auto`}>
+      <div >
         {/* Logo and Toggle Button */}
-        <div className="flex items-center justify-between p-4">
-          <img src={LOGO_ICON} alt="Logo" className={`${collapsed ? 'hidden' : 'block'}`} />
-        </div>
         <div 
-          className="flex items-center justify-between p-3 border-color-secondary cursor-pointer hover:bg-color-secondary hover:text-white transition-colors duration-300 " 
-          onClick={toggleSidebar}>
-          <span className="text-xl font-medium">Menu</span>
-          <button >
-            <img src={SIDEBAR_ICON} alt="Toggle Menu" className="w-6 h-6" />
-          </button>
+          className="flex items-center justify-between p-4"
+          onClick={toggleSidebar}
+        >
+          <img src={LOGO_ICON} alt="Logo"
+              className={`transform transition-transform duration-300 ${collapsed ? 'rotate-90' : 'rotate-0'} cursor-pointer `} />
         </div>
         {/* Menu Items */}
         {menuItems.map((item, index) => (
@@ -90,24 +86,18 @@ const SideMenu: React.FC<SideMenuProps> = ({ collapsed, toggleSidebar }) => {
         ))}
       </div>
 
-      <div className="pb-4">
-  {/* Settings Button */}
-  <a
-    href="#" // Replace # with the route for settings
-    className={`flex items-center p-3 gap-4 ${collapsed ? 'justify-center' : 'justify-start'}`}
-  >
-    <img src={SETTINGS_ICON} alt="Settings" className="w-6 h-6" />
-    <span className={`${collapsed ? 'hidden' : 'block'}`}>Settings</span>
-  </a>
-  {/* Logout Button */}
-  <a
-    href="#" // Replace # with the route for logout or a function to handle logout
-    className={`flex items-center p-3 gap-4 ${collapsed ? 'justify-center' : 'justify-start'}`}
-  >
-    <img src={LOGOUT_ICON} alt="Log Out" className="w-6 h-6" />
-    <span className={`${collapsed ? 'hidden' : 'block'}`}>Log Out</span>
-  </a>
-</div>
+      <div className="mt-auto">
+        {/* Settings Button */}
+        <a href="/settings/" className={`flex items-center p-3 gap-4 text-[#878787] ${collapsed ? 'justify-center' : 'justify-start'}`}>
+          <img src={SETTINGS_ICON} alt="Settings" className="w-6 h-6" />
+          <span className={`${collapsed ? 'hidden' : 'block'}`}>Settings</span>
+        </a>
+        {/* Logout Button */}
+        <a href="/logout/" className={`flex items-center p-3 gap-4 text-color-secondary ${collapsed ? 'justify-center' : 'justify-start'}`}>
+          <img src={LOGOUT_ICON} alt="Log Out" className="w-6 h-6" />
+          <span className={`${collapsed ? 'hidden' : 'block'}`}>Log Out</span>
+        </a>
+      </div>
     </aside>
   );
 };

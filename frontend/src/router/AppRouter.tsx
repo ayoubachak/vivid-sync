@@ -10,9 +10,12 @@ import SetupAccountType from '../pages/profile/setup/SetupAccountType';
 import SetupPersonalInfo from '../pages/profile/setup/SetupPersonalInfo';
 import SetupSocialLinks from '../pages/profile/setup/SetupSocialLinks';
 import SetupCongratulations from '../pages/profile/setup/SetupCongratulations';
+import Layout from '../pages/dashboard/components/Layout';
+import LoadingScreen from '../components/LoadingScreen';
 
 const PrivateRoute = ({ children }: { children: JSX.Element }) => {
-    const { user } = useAuth();
+    const { user, loading } = useAuth();
+    if (loading) return <LoadingScreen/>; // or a proper loading component
     return user ? children : <Navigate to="/login" />;
 };
 
@@ -28,13 +31,14 @@ const AppRouter = () => {
                 <Route path="/complete-profile/personal-info" element={<SetupPersonalInfo />} />
                 <Route path="/complete-profile/last-steps" element={<SetupSocialLinks />} />
                 <Route path="/complete-profile/congratulations" element={<SetupCongratulations />} />
-                <Route path="/dashboard" element={<Dashboard />} />
                 
                 <Route 
                     path="/dashboard" 
                     element={
                         <PrivateRoute>
-                            <Dashboard />
+                            <Layout>
+                                <Dashboard />
+                            </Layout>
                         </PrivateRoute>
                     } 
                 />

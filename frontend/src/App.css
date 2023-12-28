@@ -1,0 +1,33 @@
+/* For WebKit (Chrome, Safari, etc.) */
+.sidebar::-webkit-scrollbar {
+    width: 12px; /* width of the entire scrollbar */
+}
+  
+.sidebar::-webkit-scrollbar-track {
+    background: #f1f1f1; /* color of the tracking area */
+}
+  
+.sidebar::-webkit-scrollbar-thumb {
+    background-color: #32456F; /* color of the scroll thumb */
+    border-radius: 6px; /* roundness of the scroll thumb */
+    border: 3px solid #f1f1f1; /* creates padding around scroll thumb */
+}
+  
+/* For Firefox */
+.sidebar {
+    scrollbar-width: thin; /* "auto" or "thin" */
+    scrollbar-color: #32456F #f1f1f1; /* thumb and track color */
+}
+
+@keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+}
+  
+.logo-animation {
+    animation: rotate 2s linear infinite;
+}

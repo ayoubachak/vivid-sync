@@ -19,5 +19,11 @@ module.exports = {
       },
     },
   },
+  variants: {
+    extend: {
+      // ...
+      transform: ['responsive', 'hover', 'focus', 'group-hover'],
+    },
+  },
   plugins: [],
 }

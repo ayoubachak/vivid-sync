@@ -14,8 +14,16 @@ from rest_framework import status
 from django.core.files.storage import default_storage
 from django.http import JsonResponse
 from django.contrib.auth import get_user_model
+from rest_framework.views import APIView
 import re
 import base64
+
+class CurrentUserView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        serializer = VividUserSerializer(request.user)
+        return Response(serializer.data)
 
 class VividUserViewSet(viewsets.ModelViewSet):
     queryset = VividUser.objects.all()
