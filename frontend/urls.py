@@ -16,6 +16,9 @@ urlpatterns = [
     path('complete-profile/last-steps/', views.last_steps, name='setup-last-steps'),
     path('complete-profile/congratulations/', views.congratulations, name='setup-congratulations'),
 
+    path('password-reset/<uidb64>/<token>/', views.password_reset, name='password-reset'),
+    path('forgot-password/', views.forgot_password, name='forgot-password'),
+
     path('login/', views.login, name='login'),
     path('logout/', views.custom_logout, name='logout'),
     path('me/', views.me, name='me'),

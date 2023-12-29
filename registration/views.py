@@ -7,7 +7,7 @@ from rest_framework.generics import CreateAPIView
 from rest_framework.views import APIView
 
 from authentication.views import  generate_access_token, generate_refresh_token
-from registration.utils import send_verification_email
+from registration.utils import send_password_reset_email, send_verification_email
 from .serializers import UserRegistrationSerializer
 from users.models import VividUser
 from django.utils import timezone
@@ -20,7 +20,12 @@ from rest_framework.permissions import IsAuthenticated
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.exceptions import NotFound
 from django.shortcuts import redirect
-
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes,  force_str
+from django.core.mail import send_mail
+from django.conf import settings
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.http import urlsafe_base64_decode
 
 class RegisterUserView(CreateAPIView):
     permission_classes = [AllowAny]
@@ -137,13 +142,7 @@ def resend_verification_email(request):
     else:
         return Response({'message': 'Email is already verified.'}, status=status.HTTP_400_BAD_REQUEST)
 
-class ChangePasswordView(APIView):
-    permission_classes = [IsAuthenticated]
 
-    def post(self, request):
-        # Implement password change logic here
-        # Validate old password and set new password
-        return Response({...})
     
 
 class UpdateProfileView(APIView):
@@ -153,3 +152,68 @@ class UpdateProfileView(APIView):
         # Implement profile update logic here
         # Update user information
         return Response({...})
+
+
+class PasswordResetView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request, uidb64, token):
+        try:
+            uid = force_str(urlsafe_base64_decode(uidb64))
+            user = VividUser.objects.get(pk=uid)
+        except (TypeError, ValueError, OverflowError, VividUser.DoesNotExist):
+            user = None
+
+        if user is not None and default_token_generator.check_token(user, token):
+            new_password = request.data.get('password')
+            user.set_password(new_password)
+            user.save()
+            return Response({'message': 'Password has been reset.'})
+        else:
+            return Response({'error': 'Invalid token or user ID.'}, status=status.HTTP_400_BAD_REQUEST)
+    
+
+class SendPasswordResetLink(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        email = request.data.get('email')
+        try:
+            user = VividUser.objects.get(email=email)
+            send_password_reset_email(user, request)
+            return Response({'message': 'Password reset link sent.'})
+        except VividUser.DoesNotExist:
+            return Response({'error': 'User with this email does not exist.'}, status=status.HTTP_404_NOT_FOUND)
+        
+class PasswordResetConfirmView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request, uidb64, token):
+        try:
+            uid = force_str(urlsafe_base64_decode(uidb64))
+            user = VividUser.objects.get(pk=uid)
+        except (TypeError, ValueError, OverflowError, VividUser.DoesNotExist):
+            user = None
+
+        if user is not None and default_token_generator.check_token(user, token):
+            # The token is valid, inform the frontend
+            return Response({'valid': True, 'uid': uidb64, 'token': token})
+        else:
+            # Invalid token
+            return Response({'valid': False}, status=400)
+    
+    def post(self, request, uidb64, token):
+        try:
+            uid = force_str(urlsafe_base64_decode(uidb64))
+            user = VividUser.objects.get(pk=uid)
+        except (TypeError, ValueError, OverflowError, VividUser.DoesNotExist):
+            user = None
+
+        if user is not None and default_token_generator.check_token(user, token):
+            new_password = request.data.get('password')
+            user.set_password(new_password)
+            user.save()
+            return Response({'message': 'Password has been reset.'})
+        else:
+            return Response({'error': 'Invalid token or user ID.'}, status=status.HTTP_400_BAD_REQUEST)
+    

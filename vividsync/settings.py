@@ -53,6 +53,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.getenv('SMTP_EMAIL') # Your Gmail address
 EMAIL_HOST_PASSWORD = os.getenv('SMTP_PASSWORD')    # Your Gmail password
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 # Application definition
 
 INSTALLED_APPS = [
@@ -103,7 +104,6 @@ MIDDLEWARE = [
     # needed by allauth
     "allauth.account.middleware.AccountMiddleware",
     # needed by cors
-    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'vividsync.urls'
@@ -199,7 +199,7 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',  # session based authentication backend
     'authentication.backends.JWTAuthenticationBackend', # for jwtauthentication backend
     # needed by allauth
-    'allauth.account.auth_backends.AuthenticationBackend', # social medial authentication
+    # 'allauth.account.auth_backends.AuthenticationBackend', # social medial authentication
 ]
 
 REST_FRAMEWORK = {
@@ -217,7 +217,8 @@ REST_FRAMEWORK = {
 GOOGLE_OAUTH2_CLIENT_ID = os.getenv('GOOGLE_OAUTH2_CLIENT_ID')
 GOOGLE_OAUTH2_CLIENT_SECRET = os.getenv('GOOGLE_OAUTH2_CLIENT_SECRET')
 GOOGLE_OAUTH2_PROJECT_ID = os.getenv('GOOGLE_OAUTH2_PROJECT_ID')
-BASE_BACKEND_URL = os.getenv('BASE_BACKEND_URL', 'http://127.0.0.1:8000/')
+BASE_BACKEND_URL = 'http://localhost:8000/' # os.getenv('BASE_BACKEND_URL', 'http://localhost:8000/')
+print(f"the {BASE_BACKEND_URL=}")
 # Github Auth
 GITHUB_OAUTH2_CLIENT_ID = os.getenv('GITHUB_OAUTH2_CLIENT_ID')
 GITHUB_OAUTH2_CLIENT_SECRET = os.getenv('GITHUB_OAUTH2_CLIENT_SECRET')

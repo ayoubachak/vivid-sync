@@ -14,7 +14,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .serializers import AuthTokenSerializer, VividUserSerializer
-
+from rest_framework import status
 
 
 def generate_access_token(user):
@@ -40,23 +40,27 @@ class ObtainJWTToken(APIView):
 
     @swagger_auto_schema(request_body=AuthTokenSerializer)
     def post(self, request, *args, **kwargs):
+        print("User is being authenticated")
         serializer = AuthTokenSerializer(data=request.data)
+        print("authentication serializer valid")
         if serializer.is_valid():
             user = authenticate(**serializer.validated_data)
-
+            print("authentication serializer valid")
             if user:
                 access_token = generate_access_token(user)
                 refresh_token = generate_refresh_token(user)
                 
                 access_token_exp = timezone.now() + timedelta(days=7) # session will last as much as the refresh token 
                 request.session.set_expiry(access_token_exp)
+
                 login(request, user, backend='django.contrib.auth.backends.ModelBackend')
                 login(request, user, backend='authentication.backends.JWTAuthenticationBackend')
-
+                print("User Logged in ")                
                 return Response({
                     'access_token': access_token,
                     'refresh_token': refresh_token
                 })
+            print("User not found")
             return Response({'error': 'Invalid Credentials'}, status=400)
         return Response(serializer.errors, status=400)
 
@@ -96,3 +100,23 @@ class UserMeView(APIView):
         user = request.user
         serializer = VividUserSerializer(user)
         return Response(serializer.data)
+    
+class VerifyTokenView(APIView):
+    permission_classes = [AllowAny]
+
+    @swagger_auto_schema(
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                'token': openapi.Schema(type=openapi.TYPE_STRING, description='JWT Token'),
+            }
+        ),
+        responses={200: 'Token is valid', 400: 'Token is invalid or expired'}
+    )
+    def post(self, request, *args, **kwargs):
+        token = request.data.get('token')
+        try:
+            jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
+            return Response({'message': 'Token is valid'}, status=status.HTTP_200_OK)
+        except (jwt.ExpiredSignatureError, jwt.DecodeError):
+            return Response({'message': 'Token is invalid or expired'}, status=status.HTTP_400_BAD_REQUEST)

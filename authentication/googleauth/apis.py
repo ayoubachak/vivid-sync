@@ -23,8 +23,8 @@ class GoogleLoginRedirectApi(PublicApi):
 
         authorization_url, state = google_login_flow.get_authorization_url()
 
-        request.session["google_oauth2_state"] = state
-
+        request.session["google_oauth2_state"] = state 
+        request.session.save()
         return redirect(authorization_url)
 
 
@@ -54,7 +54,6 @@ class GoogleLoginApi(PublicApi):
             return Response({"error": "Code and state are required."}, status=status.HTTP_400_BAD_REQUEST)
 
         session_state = request.session.get("google_oauth2_state")
-
         if session_state is None:
             return Response({"error": "CSRF check failed."}, status=status.HTTP_400_BAD_REQUEST)
 

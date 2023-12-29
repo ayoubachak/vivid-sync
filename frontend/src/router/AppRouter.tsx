@@ -12,6 +12,8 @@ import SetupSocialLinks from '../pages/profile/setup/SetupSocialLinks';
 import SetupCongratulations from '../pages/profile/setup/SetupCongratulations';
 import Layout from '../pages/dashboard/components/Layout';
 import LoadingScreen from '../components/LoadingScreen';
+import PasswordReset from '../pages/auth/PasswordReset';
+import ForgotPassword from '../pages/auth/ForgotPassword';
 
 const PrivateRoute = ({ children }: { children: JSX.Element }) => {
     const { user, loading } = useAuth();
@@ -31,6 +33,8 @@ const AppRouter = () => {
                 <Route path="/complete-profile/personal-info" element={<SetupPersonalInfo />} />
                 <Route path="/complete-profile/last-steps" element={<SetupSocialLinks />} />
                 <Route path="/complete-profile/congratulations" element={<SetupCongratulations />} />
+                <Route path="/password-reset/:uidb64/:token" element={<PasswordReset />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
                 
                 <Route 
                     path="/dashboard" 

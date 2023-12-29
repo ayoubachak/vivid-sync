@@ -24,6 +24,15 @@ const axiosInstance = axios.create({
     },
 });
 
+// Function to get CSRF token from cookies
+function getCsrfToken() {
+    return document.cookie.split('; ')
+      .find(row => row.startsWith('csrftoken'))
+      ?.split('=')[1];
+  }
+  
+
+
 // Request interceptor to attach token
 axiosInstance.interceptors.request.use(config => {
     const accessToken = localStorage.getItem('accessToken');
@@ -45,9 +54,11 @@ axiosInstance.interceptors.response.use(response => {
         const refreshToken = localStorage.getItem('refreshToken');
 
         try {
-            const response = await axios.post('http://127.0.0.1:8000/api/auth/token/refresh/', { refresh_token: refreshToken });
+            const response = await axios.post('http://localhost:8000/api/auth/token/refresh/', { refresh_token: refreshToken });
             localStorage.setItem('accessToken', response.data.access_token);
             axiosInstance.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.access_token;
+            // Set CSRF token as default header
+            axiosInstance.defaults.headers.common['X-CSRFToken'] = getCsrfToken();
             return axiosInstance(error.config);
         } catch (refreshError) {
             // Handle refresh token failure (e.g., redirect to login, clear storage)

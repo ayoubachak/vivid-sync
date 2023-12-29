@@ -4,11 +4,12 @@ from django.contrib.auth import logout
 
 from registration.utils import send_verification_email
 from rest_framework.response import Response
-
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 def index(request):
     return render(request, 'frontend/auth/base.html')
 
+@ensure_csrf_cookie
 def login(request):
     if request.user.is_authenticated:
         return redirect('/me/')
@@ -16,6 +17,14 @@ def login(request):
 
 def signup(request):
     return render(request, 'frontend/auth/signup.html')
+
+def password_reset(request, uidb64, token):
+    # You can use uidb64 and token here if needed, 
+    # or simply pass them to the template.
+    return render(request, 'frontend/auth/password_reset.html', {'uidb64': uidb64, 'token': token})
+
+def forgot_password(request):
+    return render(request, 'frontend/auth/forgot_password.html')
 
 @login_required(login_url='/login/')
 def verify_email(request):
@@ -111,6 +120,6 @@ def tools_page(request):
 
 
 
-@login_required(login_url='/login/')
+# @login_required(login_url='/login/')
 def dashboard(request):
     return render(request, 'frontend/dashboard/dashboard.html')

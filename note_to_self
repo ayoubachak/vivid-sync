@@ -1,0 +1,2 @@
+DO NOT USE 127.0.0.1 as the authentication 
+server.  Use the IP address of the server.  or localhost if it's local 
