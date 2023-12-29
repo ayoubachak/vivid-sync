@@ -119,7 +119,46 @@ def tools_page(request):
     return render(request, 'pages/tools_page.html', {'current_year': datetime.now().year})
 
 
+## Dashboard views
+@login_required(login_url='/login/')
+def accounts_view(request):
+    return render(request, 'frontend/dashboard/accounts.html')
 
-# @login_required(login_url='/login/')
-def dashboard(request):
+@login_required(login_url='/login/')
+def ads_view(request):
+    return render(request, 'frontend/dashboard/ads.html')
+
+@login_required(login_url='/login/')
+def analyze_view(request):
+    return render(request, 'frontend/dashboard/analyze.html')
+
+@login_required(login_url='/login/')
+def create_view(request):
+    return render(request, 'frontend/dashboard/create.html')
+
+@login_required(login_url='/login/')
+def dashboard_view(request):
     return render(request, 'frontend/dashboard/dashboard.html')
+
+@login_required(login_url='/login/')
+def feed_view(request):
+    return render(request, 'frontend/dashboard/feed.html')
+
+@login_required(login_url='/login/')
+def inbox_view(request):
+    return render(request, 'frontend/dashboard/inbox.html')
+
+@login_required(login_url='/login/')
+def schedule_view(request):
+    return render(request, 'frontend/dashboard/schedule.html')
+
+@login_required(login_url='/login/')
+def teams_view(request):
+    return render(request, 'frontend/dashboard/teams.html')
+
+
+@login_required(login_url='/login/')
+def general_settings(request):
+    return render(request, 'frontend/settings/general_settings.html')
+
+

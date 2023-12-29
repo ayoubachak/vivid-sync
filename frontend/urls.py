@@ -23,8 +23,18 @@ urlpatterns = [
     path('logout/', views.custom_logout, name='logout'),
     path('me/', views.me, name='me'),
 
-    # add a path to the dashboard
-    path('dashboard/', views.dashboard, name='dashboard'),
+    # main dashboard pages
+    path('dashboard/', views.dashboard_view, name='dashboard'),
+    path('create/', views.create_view, name='create'),
+    path('inbox/', views.inbox_view, name='inbox'),
+    path('feed/', views.feed_view, name='feed'),
+    path('schedule/', views.schedule_view, name='feed'),
+    path('analyze/', views.analyze_view, name='analyze'),
+    path('ads/', views.ads_view, name='ads'),
+    path('teams/', views.teams_view, name='teams'),
+    path('accounts/', views.accounts_view, name='accounts'),
+    path('settings/', views.general_settings, name='general-settings'),
+
 
     # Django templates
     path('', views.landing_page, name='landing_page'),

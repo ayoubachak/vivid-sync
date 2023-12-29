@@ -2,6 +2,7 @@
 import React from 'react';
 import { LOGO_ICON } from '../../../services/links/icons';
 import { ACCOUNTS_ICON, ADS_ICON, ANALYSE_ICON, CREATE_ICON, FEED_ICON, HOME_ICON, INBOX_ICON, LOGOUT_ICON, SCHEDULE_ICON, SETTINGS_ICON,  TEAMS_ICON } from '../../../services/links/dashboard_icons';
+import { useLocation } from 'react-router-dom';
 
 interface SideMenuProps {
   collapsed: boolean;
@@ -10,7 +11,9 @@ interface SideMenuProps {
 }
 
 const SideMenu: React.FC<SideMenuProps> = ({ collapsed, toggleSidebar }) => {
-  // Placeholder menu items data. Replace with your actual icons and labels
+  // Placeholder menu items data. Replace with your actual icons and labels\
+  const location = useLocation();
+
   const menuItems = [
     { 
       icon: HOME_ICON, 
@@ -75,15 +78,16 @@ const SideMenu: React.FC<SideMenuProps> = ({ collapsed, toggleSidebar }) => {
         {menuItems.map((item, index) => (
           <a
             key={index}
-            href={item.link} // Replace with your actual route
-            className={`flex items-center p-3 gap-4 ${collapsed ? 'justify-center' : 'justify-start'} 
-                        hover:bg-color-secondary hover:text-white transition-colors duration-300`}
+            href={item.link}
+            className={`flex items-center p-3 gap-4 ${collapsed ? 'justify-center' : 'justify-start'}
+                        hover:bg-color-secondary hover:text-white transition-colors duration-300
+                        ${location.pathname === item.link ? 'bg-color-secondary text-white' : 'text-[#878787]'}`}
           >
             <img src={item.icon} alt={item.label} className="w-6 h-6" />
             <span className={`${collapsed ? 'hidden' : 'block'}`}>{item.label}</span>
           </a>
-
         ))}
+
       </div>
 
       <div className="mt-auto">
