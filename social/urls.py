@@ -16,4 +16,6 @@ urlpatterns = [
     path('', include(router.urls)),
     path('social-links/update/', update_social_links, name='update-social-links'),
     path('social-links/get/', get_social_links_by_user,name='get-social-links'),
+    path('accounts/', include('social.accounts.urls')),
+
 ]

@@ -3,6 +3,54 @@ import React from 'react';
 import { LOGO_ICON } from '../../../services/links/icons';
 import { ACCOUNTS_ICON, ADS_ICON, ANALYSE_ICON, CREATE_ICON, FEED_ICON, HOME_ICON, INBOX_ICON, LOGOUT_ICON, SCHEDULE_ICON, SETTINGS_ICON,  TEAMS_ICON } from '../../../services/links/dashboard_icons';
 import { useLocation } from 'react-router-dom';
+const menuItems = [
+  { 
+    icon: HOME_ICON, 
+    label: 'Home', 
+    link : '/dashboard/'
+  },
+  { 
+    icon: CREATE_ICON, 
+    label: 'Create',
+    link : '/create/'
+  },
+  { 
+    icon: INBOX_ICON,
+    label: 'Inbox',
+    link : '/inbox/'
+  },
+  { 
+    icon: FEED_ICON,
+    label: 'Feed',
+    link : '/feed/'
+  },
+  { 
+    icon: SCHEDULE_ICON,
+    label: 'Schedule',
+    link : '/schedule/'
+  },
+  { 
+    icon: ANALYSE_ICON,
+    label: 'Analyze',
+    link : '/analyze'
+  },
+  { 
+    icon: ADS_ICON,
+    label: 'Ads',
+    link : '/ads/'
+  },
+  { 
+    icon: TEAMS_ICON,
+    label: 'Teams',
+    link : '/teams/'
+  },
+  { 
+    icon: ACCOUNTS_ICON,
+    label: 'Accounts',
+    link : '/accounts/'
+  },
+  // Add other menu items if necessary
+];
 
 interface SideMenuProps {
   collapsed: boolean;
@@ -14,54 +62,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ collapsed, toggleSidebar }) => {
   // Placeholder menu items data. Replace with your actual icons and labels\
   const location = useLocation();
 
-  const menuItems = [
-    { 
-      icon: HOME_ICON, 
-      label: 'Home', 
-      link : '/dashboard/'
-    },
-    { 
-      icon: CREATE_ICON, 
-      label: 'Create',
-      link : '/create/'
-    },
-    { 
-      icon: INBOX_ICON,
-      label: 'Inbox',
-      link : '/inbox/'
-    },
-    { 
-      icon: FEED_ICON,
-      label: 'Feed',
-      link : '/feed/'
-    },
-    { 
-      icon: SCHEDULE_ICON,
-      label: 'Schedule',
-      link : '/schedule/'
-    },
-    { 
-      icon: ANALYSE_ICON,
-      label: 'Analyze',
-      link : '/analyze'
-    },
-    { 
-      icon: ADS_ICON,
-      label: 'Ads',
-      link : '/ads/'
-    },
-    { 
-      icon: TEAMS_ICON,
-      label: 'Teams',
-      link : '/teams/'
-    },
-    { 
-      icon: ACCOUNTS_ICON,
-      label: 'Accounts',
-      link : '/accounts/'
-    },
-    // Add other menu items if necessary
-  ];
+
 
   return (
     <aside className={`sidebar ${collapsed ? 'w-20' : 'w-64'} transition-width duration-300 h-screen light text-white flex flex-col justify-between border-r-2 border-color-primary overflow-y-auto`}>

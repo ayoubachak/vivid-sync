@@ -16,9 +16,10 @@ function getCookie(name : string) {
 }
 
 const csrftoken = getCookie('csrftoken');
+const protocol = window.location.protocol;
 
 const axiosInstance = axios.create({
-    baseURL: 'http://localhost:8000/',
+    baseURL: `${protocol}//localhost:8000/`,
     headers: {
         'X-CSRFToken': csrftoken, // this is important for the hybrid approach between django and react
     },
@@ -54,7 +55,7 @@ axiosInstance.interceptors.response.use(response => {
         const refreshToken = localStorage.getItem('refreshToken');
 
         try {
-            const response = await axios.post('http://localhost:8000/api/auth/token/refresh/', { refresh_token: refreshToken });
+            const response = await axios.post(`${protocol}//localhost:8000/api/auth/token/refresh/`, { refresh_token: refreshToken });
             localStorage.setItem('accessToken', response.data.access_token);
             axiosInstance.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.access_token;
             // Set CSRF token as default header

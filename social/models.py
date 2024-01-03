@@ -3,10 +3,13 @@
 from django.db import models
 from users.models import VividUser
 from django.utils import timezone
+import requests
 
 def social_link_icon_directory_path(instance, filename):
-    # file will be uploaded to MEDIA_ROOT/users/user_<id>/images/profile_pic/<filename>
     return f'social_links/{instance.id}/icon/{filename}'
+
+def social_media_platform_icon_directory_path(instance, filename):
+    return f'social_platform_icons/{instance.id}/icon/{filename}'
 
 
 class Hashtag(models.Model):
@@ -18,6 +21,9 @@ class Hashtag(models.Model):
 class SocialMediaPlatform(models.Model):
     name = models.CharField(max_length=50, unique=True)
     base_url = models.URLField(max_length=500)
+    login_redirect_url = models.URLField(max_length=500, blank=True, null=True)
+    login_callback_url = models.URLField(max_length=500, blank=True, null=True)
+    icon = models.ImageField(upload_to=social_media_platform_icon_directory_path, blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -32,6 +38,11 @@ class SocialMediaProfile(models.Model):
     bio = models.TextField(blank=True, null=True)
     is_verified = models.BooleanField(default=False)
 
+    # New fields for OAuth data
+    access_token = models.CharField(max_length=500, blank=True, null=True)
+    refresh_token = models.CharField(max_length=500, blank=True, null=True)
+    token_expires_at = models.DateTimeField(null=True, blank=True)  
+
     def get_platform_url(self):
         """
         Returns the full URL to the social media profile, if base_url is provided for the platform.
@@ -42,6 +53,26 @@ class SocialMediaProfile(models.Model):
 
     def __str__(self):
         return f"{self.user.username} on {self.platform.name}"
+    
+    def refresh_access_token(self):
+        """
+        Refresh the access token for the profile.
+        """
+        # Example for Instagram ( This will not work, it's just an example yoo )
+        if self.platform.name.lower() == 'instagram':
+            response = requests.get(
+                'https://graph.instagram.com/refresh_access_token',
+                params={
+                    'grant_type': 'ig_refresh_token',
+                    'access_token': self.access_token
+                }
+            )
+
+            data = response.json()
+            if 'access_token' in data:
+                self.access_token = data['access_token']
+                self.token_expires_at = timezone.now() + timezone.timedelta(seconds=data['expires_in'])
+                self.save()
 
 
 class ExternalUser(models.Model):

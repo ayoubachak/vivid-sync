@@ -31,3 +31,13 @@
 .logo-animation {
     animation: rotate 2s linear infinite;
 }
+
+@media (max-width: 768px) {
+    .hamburger-menu-icon {
+      display: block;
+    }
+    .sidebar {
+      /* Adjust sidebar styles for small screens */
+    }
+  }
+  

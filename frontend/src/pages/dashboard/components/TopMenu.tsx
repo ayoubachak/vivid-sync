@@ -1,6 +1,5 @@
 // src/components/Dashboard/TopMenu.tsx
 
-import ToggleSwitch from "./ToggleSwitch";
 import { NOTIFICATION_BELL } from "../../../services/links/dashboard_icons";
 import { useFetchUserInfo } from "../../../hooks/useFetchUserInfo";
 import { FEMALE_ICON, MALE_ICON, ORANGE_TRIANGEL_DOWN } from "../../../services/links/icons";
@@ -9,7 +8,11 @@ import { useEffect, useRef, useState } from "react";
 
 
 
-const TopMenu: React.FC = () => {
+interface TopMenuProps {
+
+}
+
+const TopMenu: React.FC<TopMenuProps> = () => {
     const [showUserDropdown, setShowUserDropdown] = useState(false);
     const [showNotificationDropdown, setShowNotificationDropdown] = useState(false);
     const { user, loading, error } = useFetchUserInfo();
@@ -57,11 +60,11 @@ const TopMenu: React.FC = () => {
 
     return (
     <header className="flex justify-end gap-[26px] p-4 ">
-        <ToggleSwitch />
+           {/* Sidebar Toggle Button */}
         <div className="relative" ref={notificationMenuRef}>
             <div className="flex items-center justify-center w-10 h-10 rounded-full bg-white border-2 border-text-color p-[6px] hover:bg-gray-100 cursor-pointer"
                 onClick={handleNotificationClick}>
-            <img src={NOTIFICATION_BELL} alt="Notification" />
+              <img src={NOTIFICATION_BELL} alt="Notification" />
             </div>
             {showNotificationDropdown && (
             <div className="absolute right-0 mt-2 py-2 w-48 bg-white rounded-md shadow-xl">
@@ -70,9 +73,7 @@ const TopMenu: React.FC = () => {
             </div>
             )}
         </div>
-
-
-
+ 
         <div className="relative" ref={userMenuRef}>
             <div className="mr-6 flex gap-[6px] items-center hover:bg-gray-300 cursor-pointer transition duration-300 rounded-full"
                 onClick={handleUserClick}>
@@ -91,6 +92,7 @@ const TopMenu: React.FC = () => {
                 <a href="/logout/" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Log Out</a>
             </div>
             )}
+        
       </div>
 
     </header>
