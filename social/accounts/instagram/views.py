@@ -10,13 +10,13 @@ from rest_framework import status
 from django.http import HttpResponseRedirect
 
 
-class InitiateInstagramAuth(APIView):
+class InitiateInstagramBasicAuth(APIView):
     def get(self, request, *args, **kwargs):
         oauth_url = f"https://api.instagram.com/oauth/authorize?client_id={settings.VIVIDSYNC_INSTAGRAM_APP_ID}&redirect_uri={settings.VIVIDSYNC_INSTAGRAM_APP_REDIRECT_URI}&scope=user_profile,user_media&response_type=code"
         print("Initialization for code")
         return HttpResponseRedirect(oauth_url)
 
-class InstagramCallback(APIView):
+class InstagramBasicCallback(APIView):
     def get(self, request, *args, **kwargs):
         code = request.GET.get('code')
         if not code:
@@ -58,16 +58,32 @@ class InstagramCallback(APIView):
         if not long_lived_token:
             return redirect('/error/')  # Handle error scenario
 
+        user_info_response = requests.get(
+            f'https://graph.instagram.com/me?fields=id,username,account_type,media_count&access_token={long_lived_token}'
+        )
+        user_info_data = user_info_response.json()
+
         # Fetch or create the SocialMediaPlatform for Instagram
         platform, _ = SocialMediaPlatform.objects.get_or_create(name='Instagram')
 
         # Save to SocialMediaProfile model
-        SocialMediaProfile.objects.create(
-            user=request.user,
+        # Inside InstagramCallback after obtaining the long-lived token and user info
+        profile, created = SocialMediaProfile.objects.update_or_create(
             platform=platform,
-            handle='the_instagram_username',
-            access_token=long_lived_token,
-            token_expires_at=timezone.now() + timezone.timedelta(seconds=expires_in)
+            handle=user_info_data.get('username'),
+            profile_id=user_info_data.get('id'),
+            defaults={
+                'user': request.user,
+                'account_type': user_info_data.get('account_type'),
+                'url': f"https://www.instagram.com/{user_info_data.get('username')}/",
+                'access_token': long_lived_token,
+                'token_expires_at': timezone.now() + timezone.timedelta(seconds=expires_in),
+            }
         )
-        
+        if created:
+            print(f"Created new social media profile for {user_info_data.get('username')}")
+        else:
+            print(f"Updated social media profile for {user_info_data.get('username')}")
+
+
         return redirect('/me/')  # Redirect to a success page

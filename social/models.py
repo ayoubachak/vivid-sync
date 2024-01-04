@@ -4,13 +4,15 @@ from django.db import models
 from users.models import VividUser
 from django.utils import timezone
 import requests
+import re
 
 def social_link_icon_directory_path(instance, filename):
     return f'social_links/{instance.id}/icon/{filename}'
 
 def social_media_platform_icon_directory_path(instance, filename):
-    return f'social_platform_icons/{instance.name}/icon/{filename}'
-
+    # Replace all non-alphanumeric characters (except for hyphens and underscores) with an underscore
+    safe_name = re.sub(r'[^\w\-]', '_', instance.name)
+    return f'social_platform_icons/{safe_name}/icon/{filename}'
 
 class Hashtag(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -30,14 +32,20 @@ class SocialMediaPlatform(models.Model):
 
 class SocialMediaProfile(models.Model):
     user = models.ForeignKey(VividUser, on_delete=models.CASCADE, related_name='social_media_profiles')
+    profile_id = models.CharField(max_length=255, blank=True, null=True)
+    account_type = models.CharField(max_length=50, blank=True, null=True)
     platform = models.ForeignKey(SocialMediaPlatform, on_delete=models.CASCADE, related_name='profiles')
     handle = models.CharField(max_length=255)
     url = models.URLField(max_length=500, blank=True, null=True)
     profile_picture = models.ImageField(upload_to='social_profile_pics/', blank=True, null=True)
+    remote_profile_picture = models.CharField(max_length=500, blank=True, null=True)
     followers_count = models.IntegerField(default=0)
     bio = models.TextField(blank=True, null=True)
     is_verified = models.BooleanField(default=False)
-
+    # is_page = models.BooleanField(default=False)
+    # page_id = models.CharField(max_length=255, blank=True, null=True)
+    # page_name = models.CharField(max_length=255, blank=True, null=True)
+    
     # New fields for OAuth data
     access_token = models.CharField(max_length=500, blank=True, null=True)
     refresh_token = models.CharField(max_length=500, blank=True, null=True)
