@@ -9,7 +9,7 @@ def social_link_icon_directory_path(instance, filename):
     return f'social_links/{instance.id}/icon/{filename}'
 
 def social_media_platform_icon_directory_path(instance, filename):
-    return f'social_platform_icons/{instance.id}/icon/{filename}'
+    return f'social_platform_icons/{instance.name}/icon/{filename}'
 
 
 class Hashtag(models.Model):

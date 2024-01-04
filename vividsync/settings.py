@@ -14,10 +14,15 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+DOTENV_PATH = BASE_DIR / '.env'
+load_dotenv(
+    dotenv_path=DOTENV_PATH, 
+    verbose=True,
+    override=True
+)
 
 
 # Quick-start development settings - unsuitable for production
@@ -221,7 +226,7 @@ REST_FRAMEWORK = {
 GOOGLE_OAUTH2_CLIENT_ID = os.getenv('GOOGLE_OAUTH2_CLIENT_ID')
 GOOGLE_OAUTH2_CLIENT_SECRET = os.getenv('GOOGLE_OAUTH2_CLIENT_SECRET')
 GOOGLE_OAUTH2_PROJECT_ID = os.getenv('GOOGLE_OAUTH2_PROJECT_ID')
-BASE_BACKEND_URL = 'http://localhost:8000/' # os.getenv('BASE_BACKEND_URL', 'http://localhost:8000/')
+BASE_BACKEND_URL = os.getenv('BASE_BACKEND_URL', 'http://localhost:8000/')
 # Github Auth
 GITHUB_OAUTH2_CLIENT_ID = os.getenv('GITHUB_OAUTH2_CLIENT_ID')
 GITHUB_OAUTH2_CLIENT_SECRET = os.getenv('GITHUB_OAUTH2_CLIENT_SECRET')
@@ -231,6 +236,7 @@ FACEBOOK_OAUTH2_APP_SECRET = os.getenv('FACEBOOK_OAUTH2_APP_SECRET')
 # Instagram Auth
 VIVIDSYNC_INSTAGRAM_APP_ID = os.getenv('VIVIDSYNC_INSTAGRAM_APP_ID')
 VIVIDSYNC_INSTAGRAM_APP_SECRET = os.getenv('VIVIDSYNC_INSTAGRAM_APP_SECRET')
+VIVIDSYNC_INSTAGRAM_APP_AUTH_INIT_URI = os.getenv('VIVIDSYNC_INSTAGRAM_APP_AUTH_INIT_URI')
 VIVIDSYNC_INSTAGRAM_APP_REDIRECT_URI = os.getenv('VIVIDSYNC_INSTAGRAM_APP_REDIRECT_URI')
 
 LOGIN_REDIRECT_URL="/me/"
