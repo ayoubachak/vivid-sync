@@ -32,6 +32,10 @@ class SocialMediaPlatform(models.Model):
 
 class SocialMediaProfile(models.Model):
     user = models.ForeignKey(VividUser, on_delete=models.CASCADE, related_name='social_media_profiles')
+    email = models.EmailField(max_length=255, blank=True, null=True)
+    name = models.CharField(max_length=255, blank=True, null=True)
+    first_name = models.CharField(max_length=255, blank=True, null=True)
+    last_name = models.CharField(max_length=255, blank=True, null=True)
     profile_id = models.CharField(max_length=255, blank=True, null=True)
     account_type = models.CharField(max_length=50, blank=True, null=True)
     platform = models.ForeignKey(SocialMediaPlatform, on_delete=models.CASCADE, related_name='profiles')
@@ -42,9 +46,9 @@ class SocialMediaProfile(models.Model):
     followers_count = models.IntegerField(default=0)
     bio = models.TextField(blank=True, null=True)
     is_verified = models.BooleanField(default=False)
-    # is_page = models.BooleanField(default=False)
-    # page_id = models.CharField(max_length=255, blank=True, null=True)
-    # page_name = models.CharField(max_length=255, blank=True, null=True)
+    is_page = models.BooleanField(default=False)
+    page_id = models.CharField(max_length=255, blank=True, null=True)
+    page_name = models.CharField(max_length=255, blank=True, null=True)
     
     # New fields for OAuth data
     access_token = models.CharField(max_length=500, blank=True, null=True)
